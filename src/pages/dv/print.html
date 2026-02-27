@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Share Debit Voucher</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+            integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        /* Share Controls */
+        .share-controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .share-controls h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .btn-whatsapp { background-color: #25d366; border-color: #25d366; color: white; }
+        .btn-whatsapp:hover { background-color: #128c7e; color: white; }
+
+        /* Voucher Card */
+        .voucher-card {
+            background: white;
+            /* border: 1.5px dashed #ccc; */
+            border-radius: 12px;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 25px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        /* Header: Logo | Title | QR */
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #003087;
+            margin-bottom: 20px;
+        }
+
+        .voucher-header .logo img {
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .voucher-header .title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .voucher-header .title h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .voucher-header .qr-box {
+            text-align: center;
+        }
+
+        .voucher-header .qr-box small {
+            display: block;
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        /* Paid To / Head section */
+        .paid-section {
+            margin-bottom: 18px;
+        }
+
+        .paid-section .label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 2px;
+        }
+
+        .paid-section .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: underline;
+            line-height: 1.2;
+        }
+
+        .paid-section .head-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: underline;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 20px;
+            margin-bottom: 15px;
+        }
+
+        .info-grid .info-item {
+            font-size: 0.9rem;
+        }
+
+        .info-grid .info-item strong {
+            color: #333;
+        }
+
+        /* Narration Box */
+        .narration-box {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            min-height: 50px;
+            color: #333;
+        }
+
+        .narration-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        /* Denomination Table */
+        .deno-section h6 {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .deno-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        .deno-table th {
+            font-weight: 700;
+            padding: 6px 10px;
+            border-bottom: 2px solid #dee2e6;
+            text-align: left;
+        }
+
+        .deno-table td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .deno-table tfoot tr {
+            background: #dce8ff;
+        }
+
+        .deno-table tfoot th {
+            padding: 7px 10px;
+            font-weight: 700;
+            border-top: 2px solid #aac4f0;
+        }
+
+        /* Footer */
+        .voucher-footer {
+            text-align: center;
+            /* border-top: 1px solid #ddd; */
+            padding-top: 12vh;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        hr {color: #003087;}
+
+        /* Signatures */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15vh;
+            font-size: 0.82rem;
+            color: #333;
+        }
+
+        .sig-item {
+            min-width: 150px;
+            border-top: 1px solid #000;
+            padding-top: 4px;
+            text-align: center;
+        }
+
+        /* Error card */
+        .error-card {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 3rem auto;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { padding: 0; background: white; }
+            .voucher-card { border: none; box-shadow: none; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Share Controls -->
+    <div class="no-print share-controls">
+        <h2><i class="fas fa-share-alt me-2"></i>Share Debit Voucher</h2>
+        <div class="btn-group">
+            <button class="btn btn-whatsapp" onclick="shareAsImage()" title="WhatsApp"><i class="fab fa-whatsapp me-1"></i>WhatsApp</button>
+            <button class="btn btn-warning"  onclick="downloadImage()" title="Image"><i class="fas fa-download me-1"></i>Image</button>
+            <button class="btn btn-danger"   onclick="downloadPDF()"   title="PDF"><i class="fas fa-file-pdf me-1"></i>PDF</button>
+            <button class="btn btn-secondary" onclick="window.print()" title="Print"><i class="fas fa-print me-1"></i>Print</button>
+        </div>
+    </div>
+
+    <!-- Voucher Content -->
+    <div id="voucher-content">
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-3 text-muted">Loading voucher data...</p>
+        </div>
+    </div>
+
+    <script src="/src/scripts/config/configLoader.js"></script>
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const wait = setInterval(() => {
+            if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                clearInterval(wait);
+                loadVoucher();
+            }
+        }, 300);
+    });
+
+    async function loadVoucher() {
+        const params    = new URLSearchParams(window.location.search);
+        const rawSlip   = params.get('slip') || '';
+        const slipNo    = rawSlip.replace(/[^0-9]/g, '');
+        const slipNoNum = Number(slipNo);
+
+        if (!slipNo || slipNo.length < 2 || slipNo.length > 50) {
+            showError('Invalid or missing slip number in the URL.');
+            return;
+        }
+
+        try {
+            const snapshot = await firebase.firestore()
+                .collection('dr.vouchers')
+                .where('slipNo', '==', slipNoNum)
+                .limit(1)
+                .get();
+
+            if (snapshot.empty) {
+                showError(`No debit voucher found for slip <strong>${escapeHtml(slipNo)}</strong>.`);
+                return;
+            }
+
+            renderVoucher(snapshot.docs[0].data(), slipNo);
+
+        } catch (err) {
+            console.error('DV print error:', err);
+            showError('Failed to load voucher. Please try again later.');
+        }
+    }
+
+    function renderVoucher(d, slipNo) {
+        const verifyUrl = `${window.location.origin}/src/pages/vouchers/verify.html?slip=${encodeURIComponent(slipNo)}`;
+
+        document.getElementById('voucher-content').innerHTML = `
+        <div class="voucher-card" id="printable-voucher">
+
+            <!-- HEADER: Logo | Title | QR -->
+            <div class="voucher-header">
+                <div class="logo">
+                    <img src="/image/ARY_Digital_Logo_2.png" alt="ARY Services Logo"
+                         onerror="this.style.display='none'">
+                </div>
+                <div class="title">
+                    <h2>OFFICIAL DEBIT VOUCHER</h2>
+                </div>
+                <div class="qr-box">
+                    <div id="qrcode"></div>
+                    <small>Scan to verify</small>
+                </div>
+            </div>
+
+            <!-- PAID TO / HEAD -->
+            <div class="paid-section">
+                <div class="label">Paid To:</div>
+                <div class="value">${escapeHtml(d.pointPerson || '-')}</div>
+            </div>
+            <div class="paid-section">
+                <div class="label">Head:</div>
+                <div class="head-value">${escapeHtml(d.paymentHead || '-')}</div>
+            </div>
+
+            <!-- INFO GRID -->
+            <div class="info-grid">
+                <div class="info-item"><strong>V No:</strong> ${escapeHtml(String(d.slipNo || slipNo))}</div>
+                <div class="info-item"><strong>Cell:</strong> ${escapeHtml(d.cellNo || '-')}</div>
+                <div class="info-item"><strong>Payment From:</strong> ${escapeHtml(d.paymentFrom || '-')}</div>
+                <div class="info-item"><strong>Date:</strong> ${escapeHtml(d.paymentDate || '-')}</div>
+                <div class="info-item"><strong>Payment Mode:</strong> ${escapeHtml(d.paymentMode || '-')}</div>
+                <div class="info-item"><strong>Payment Status:</strong> ${escapeHtml(d.paymentStatus || '-')}</div>
+            </div>
+
+            <!-- NARRATION -->
+            <div class="narration-label">Narration:</div>
+            <div class="narration-box">${escapeHtml(d.remarks || '-')}</div>
+
+            <!-- DENOMINATION TABLE -->
+            <div class="deno-section">
+                <h6>Denomination Breakdown</h6>
+                <table class="deno-table">
+                    <thead>
+                        <tr>
+                            <th>Denomination</th>
+                            <th>Count</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>${buildDenoRows(d)}</tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total Cash</th>
+                            <th>${formatAmount(d.cash || 0)}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- SIGNATURES -->
+            <div class="signatures">
+                <div class="sig-item">Prepared By: ${escapeHtml(d.user || '')}</div>
+                <div class="sig-item">Verified By: Qasim</div>
+                <div class="sig-item">Reviewed By: Mohiudeen</div>
+                <div class="sig-item">Received By: </div>
+            </div>
+
+
+            <!-- FOOTER -->
+            <div class="voucher-footer">
+                <hr>
+                Generated by ORSYS-ARY DV System | ${new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}
+            </div>
+
+
+        </div>`;
+
+        // QR Code
+        new QRCode(document.getElementById('qrcode'), {
+            text: verifyUrl, width: 80, height: 80
+        });
+    }
+
+    function buildDenoRows(d) {
+        const denoms = [
+            { label: '5000', field: 'deno5000' },
+            { label: '1000', field: 'deno1000' },
+            { label: '500',  field: 'deno500'  },
+            { label: '100',  field: 'deno100'  },
+            { label: '50',   field: 'deno50'   },
+            { label: '20',   field: 'deno20'   },
+            { label: '10',   field: 'deno10'   },
+            { label: '1',    field: 'deno1'    },
+        ];
+        const active = denoms.filter(dn => d[dn.field] && d[dn.field] > 0);
+        if (!active.length) return '<tr><td colspan="3" class="text-center text-muted py-2">No breakdown available</td></tr>';
+        return active.map(dn => {
+            const count = d[dn.field];
+            const amt   = count * parseInt(dn.label);
+            return `<tr>
+                <td>${dn.label}</td>
+                <td>${count.toLocaleString()}</td>
+                <td>${formatAmount(amt)}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function showError(msg) {
+        document.getElementById('voucher-content').innerHTML = `
+            <div class="error-card">
+                <i class="fas fa-exclamation-circle text-danger mb-3" style="font-size:3rem;"></i>
+                <h5 class="text-danger">Voucher Not Found</h5>
+                <p class="text-muted">${msg}</p>
+            </div>`;
+    }
+
+    async function shareAsImage() {
+        const el = document.getElementById('printable-voucher');
+        if (!el) return;
+        const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+        canvas.toBlob(blob => {
+            const file = new File([blob], 'debit-voucher.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({ files: [file], title: 'ORSYS-ARY Debit Voucher' });
+            } else {
+                window.open(`https://wa.me/?text=View%20Voucher:%20${encodeURIComponent(window.location.href)}`, '_blank');
+            }
+        });
+    }
+
+    async function downloadImage() {
+        const el = document.getElementById('printable-voucher');
+        if (!el) return;
+        const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+        const a = document.createElement('a');
+        a.download = `dv_${new URLSearchParams(window.location.search).get('slip') || 'voucher'}.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+    }
+
+    function downloadPDF() {
+        const el = document.getElementById('printable-voucher');
+        if (!el) return;
+        const slipNo = new URLSearchParams(window.location.search).get('slip') || 'voucher';
+        html2pdf().set({
+            margin: 10,
+            filename: `debit_voucher_${slipNo}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(el).save();
+    }
+
+    function formatAmount(val) {
+        return (parseFloat(val) || 0).toLocaleString('en-PK', { minimumFractionDigits: 0 });
+    }
+
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, c => ({
+            '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        }[c]));
+    }
+    </script>
+
+</body>
+</html>

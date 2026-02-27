@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY | Backup & Restore</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom Navbar CSS (same as dashboard) -->
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --danger-gradient: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .page-header .subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* Cards */
+        .action-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .action-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        .action-card h5 {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .action-card h5 i {
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+
+        /* Backup Button */
+        .btn-backup {
+            background: var(--success-gradient);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-backup:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            color: white;
+        }
+
+        .btn-backup:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Restore Button */
+        .btn-restore {
+            background: var(--danger-gradient);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-restore:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(235, 51, 73, 0.4);
+            color: white;
+        }
+
+        .btn-restore:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Collection Checkboxes */
+        .collection-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            color: #2d3748;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .collection-item:hover {
+            background: #e9ecef;
+        }
+
+        .collection-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+
+        /* Log Box */
+        #logBox {
+            background: #1e1e2e;
+            color: #a6e3a1;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            min-height: 150px;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        #logBox .log-error { color: #f38ba8; }
+        #logBox .log-info  { color: #89dceb; }
+        #logBox .log-success { color: #a6e3a1; }
+
+        /* File Drop Zone */
+        .drop-zone {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f0f2ff;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            background: #e0e4ff;
+            border-color: #764ba2;
+        }
+
+        .drop-zone i {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            font-size: 0.9rem;
+            color: #856404;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Stats Row */
+        .stat-pill {
+            background: #f0f2ff;
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #667eea;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            width: 80px; height: 80px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="text-center">
+            <div class="loader"></div>
+            <p class="mt-3 text-muted">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-database me-3"></i>Backup &amp; Restore</h1>
+                    <p class="subtitle mb-0">Export your Firestore data or restore from a backup file</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="/src/pages/admin/index.html" class="btn btn-sm"
+                       style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.5); border-radius:20px;">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid px-4">
+        <div class="row">
+
+            <!-- ===================== -->
+            <!-- BACKUP SECTION        -->
+            <!-- ===================== -->
+            <div class="col-lg-6">
+                <div class="action-card">
+                    <h5><i class="fas fa-download"></i>Backup Database</h5>
+                    <p class="text-muted mb-3">Select which collections to export. A JSON file will be downloaded to your computer.</p>
+
+                    <!-- Collection Checkboxes -->
+                    <p class="fw-semibold mb-2" style="font-size:0.9rem; color:#555;">Select Collections:</p>
+
+                    <label class="collection-item">
+                        <input type="checkbox" class="col-check" value="cr.vouchers" checked>
+                        <i class="fas fa-file-invoice text-success"></i> cr.vouchers
+                        <span class="ms-auto stat-pill" id="count-cr">— docs</span>
+                    </label>
+
+                    <label class="collection-item">
+                        <input type="checkbox" class="col-check" value="dr.vouchers" checked>
+                        <i class="fas fa-file-invoice-dollar text-danger"></i> dr.vouchers
+                        <span class="ms-auto stat-pill" id="count-dr">— docs</span>
+                    </label>
+
+                    <label class="collection-item">
+                        <input type="checkbox" class="col-check" value="head" checked>
+                        <i class="fas fa-sitemap text-primary"></i> head
+                        <span class="ms-auto stat-pill" id="count-head">— docs</span>
+                    </label>
+
+                    <div class="mt-3 mb-3">
+                        <label class="form-check-label text-muted" style="font-size:0.85rem;">
+                            <input type="checkbox" id="selectAll" checked onchange="toggleAll(this)">
+                            &nbsp;Select / Deselect All
+                        </label>
+                    </div>
+
+                    <button class="btn-backup w-100" id="backupBtn" onclick="startBackup()">
+                        <i class="fas fa-database me-2"></i>Download Backup
+                    </button>
+
+                    <!-- Log -->
+                    <div id="logBox" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- ===================== -->
+            <!-- RESTORE SECTION       -->
+            <!-- ===================== -->
+            <div class="col-lg-6">
+                <div class="action-card">
+                    <h5><i class="fas fa-upload"></i>Restore Database</h5>
+
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Warning:</strong> Restoring will <strong>overwrite existing documents</strong> with the same IDs. This cannot be undone. Make a fresh backup first!
+                    </div>
+
+                    <!-- Drop Zone -->
+                    <div class="drop-zone" id="dropZone" onclick="document.getElementById('restoreFile').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <strong>Click or drag &amp; drop</strong> your backup JSON file here
+                        <p class="mt-2 mb-0 text-muted" style="font-size:0.85rem;">Only <code>.json</code> files exported from this system</p>
+                    </div>
+                    <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="previewRestore(event)">
+
+                    <!-- Preview -->
+                    <div id="restorePreview" class="mt-3" style="display:none;">
+                        <p class="fw-semibold mb-2" style="font-size:0.9rem; color:#555;">File Preview:</p>
+                        <div id="previewContent"></div>
+                        <button class="btn-restore w-100 mt-3" id="restoreBtn" onclick="startRestore()">
+                            <i class="fas fa-undo-alt me-2"></i>Restore Now
+                        </button>
+                    </div>
+
+                    <!-- Restore Log -->
+                    <div id="restoreLogBox" class="mt-3"
+                         style="background:#1e1e2e; color:#89dceb; border-radius:10px; padding:1rem 1.25rem;
+                                font-family:monospace; font-size:0.85rem; min-height:80px;
+                                max-height:200px; overflow-y:auto; display:none;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Last Backup Info -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="action-card">
+                    <h5><i class="fas fa-history"></i>Backup History</h5>
+                    <p class="text-muted mb-0" id="lastBackupInfo">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>
+                        No backup recorded in this session yet. Download a backup above to get started.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+
+    <!-- Firebase Config Loader -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+
+    <!-- Navbar -->
+    <script src="/assets/js/navbar.js"></script>
+
+    <script>
+        // =============================================
+        // LOAD DOC COUNTS ON PAGE LOAD
+        // =============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for Firebase to be ready via configLoader
+            const waitForFirebase = setInterval(async () => {
+                if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                    clearInterval(waitForFirebase);
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    await loadCounts();
+                }
+            }, 300);
+        });
+
+        async function loadCounts() {
+            const map = {
+                'cr.vouchers': 'count-cr',
+                'dr.vouchers': 'count-dr',
+                'head':        'count-head'
+            };
+            for (const [col, elId] of Object.entries(map)) {
+                try {
+                    const snap = await firebase.firestore().collection(col).get();
+                    document.getElementById(elId).textContent = snap.size + ' docs';
+                } catch (e) {
+                    document.getElementById(elId).textContent = 'error';
+                }
+            }
+        }
+
+        // =============================================
+        // SELECT ALL TOGGLE
+        // =============================================
+        function toggleAll(master) {
+            document.querySelectorAll('.col-check').forEach(cb => cb.checked = master.checked);
+        }
+
+        // =============================================
+        // LOG HELPERS
+        // =============================================
+        function log(msg, type = 'success') {
+            const box = document.getElementById('logBox');
+            box.style.display = 'block';
+            box.innerHTML += `<div class="log-${type}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function rlog(msg, type = 'info') {
+            const box = document.getElementById('restoreLogBox');
+            box.style.display = 'block';
+            box.innerHTML += `<div style="color:${type === 'error' ? '#f38ba8' : type === 'success' ? '#a6e3a1' : '#89dceb'}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // =============================================
+        // BACKUP
+        // =============================================
+        async function startBackup() {
+            const selected = [...document.querySelectorAll('.col-check:checked')].map(cb => cb.value);
+            if (selected.length === 0) {
+                alert('Please select at least one collection to backup.');
+                return;
+            }
+
+            const btn = document.getElementById('backupBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Backing up...';
+            btn.disabled = true;
+            document.getElementById('logBox').innerHTML = '';
+
+            try {
+                const backup = { _meta: { exportedAt: new Date().toISOString(), collections: selected } };
+
+                for (const col of selected) {
+                    log(`📦 Reading ${col}...`, 'info');
+                    const snap = await firebase.firestore().collection(col).get();
+                    backup[col] = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    log(`✅ ${col} — ${snap.docs.length} documents`, 'success');
+                }
+
+                const filename = `ORSYS_backup_${new Date().toISOString().split('T')[0]}.json`;
+                const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                log(`🎉 Backup complete! File: ${filename}`, 'success');
+
+                // Update history
+                document.getElementById('lastBackupInfo').innerHTML =
+                    `<i class="fas fa-check-circle me-2 text-success"></i>
+                     Last backup: <strong>${new Date().toLocaleString()}</strong> —
+                     Collections: <strong>${selected.join(', ')}</strong> — File: <strong>${filename}</strong>`;
+
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Backup Done!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-database me-2"></i>Download Backup';
+                    btn.disabled = false;
+                }, 3000);
+
+            } catch (err) {
+                log(`❌ Error: ${err.message}`, 'error');
+                btn.innerHTML = '<i class="fas fa-times me-2"></i>Failed!';
+                btn.disabled = false;
+            }
+        }
+
+        // =============================================
+        // RESTORE — PREVIEW
+        // =============================================
+        let restoreData = null;
+
+        function previewRestore(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    restoreData = JSON.parse(e.target.result);
+                    const collections = Object.keys(restoreData).filter(k => k !== '_meta');
+                    let html = '';
+
+                    if (restoreData._meta) {
+                        html += `<div class="stat-pill"><i class="fas fa-clock me-1"></i>Exported: ${new Date(restoreData._meta.exportedAt).toLocaleString()}</div>`;
+                    }
+
+                    collections.forEach(col => {
+                        const count = restoreData[col].length;
+                        html += `<div class="stat-pill"><i class="fas fa-table me-1"></i>${col}: ${count} docs</div>`;
+                    });
+
+                    document.getElementById('previewContent').innerHTML = html;
+                    document.getElementById('restorePreview').style.display = 'block';
+                    document.getElementById('restoreLogBox').innerHTML = '';
+                    document.getElementById('restoreLogBox').style.display = 'none';
+                } catch (err) {
+                    alert('❌ Invalid JSON file. Please use a backup exported from this system.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Drag & Drop
+        const dropZone = document.getElementById('dropZone');
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.json')) {
+                previewRestore({ target: { files: [file] } });
+            } else {
+                alert('Please drop a .json backup file.');
+            }
+        });
+
+        // =============================================
+        // RESTORE — EXECUTE
+        // =============================================
+        async function startRestore() {
+            if (!restoreData) return;
+
+            const confirmed = confirm(
+                '⚠️ WARNING: This will overwrite existing documents with matching IDs.\n\nAre you absolutely sure you want to restore?'
+            );
+            if (!confirmed) return;
+
+            const btn = document.getElementById('restoreBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Restoring...';
+            btn.disabled = true;
+
+            const collections = Object.keys(restoreData).filter(k => k !== '_meta');
+
+            try {
+                for (const col of collections) {
+                    rlog(`📦 Restoring ${col}...`, 'info');
+                    const docs = restoreData[col];
+                    let count = 0;
+
+                    for (const doc of docs) {
+                        const { id, ...data } = doc;
+                        await firebase.firestore().collection(col).doc(id).set(data, { merge: true });
+                        count++;
+                    }
+
+                    rlog(`✅ ${col} — ${count} documents restored`, 'success');
+                }
+
+                rlog('🎉 Restore complete!', 'success');
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Restore Done!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-undo-alt me-2"></i>Restore Now';
+                    btn.disabled = false;
+                }, 3000);
+
+            } catch (err) {
+                rlog(`❌ Error: ${err.message}`, 'error');
+                btn.innerHTML = '<i class="fas fa-times me-2"></i>Failed!';
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+</body>
+<!-- Design & Developed by: Syed Aneel Raza -->
+</html>

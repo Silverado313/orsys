@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Receipt History</title>
+
+    <!-- Bootstrap & Firebase -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+        
+    
+</head>
+<body>
+    <!-- Navigation -->
+
+     <!-- <div id="backAngle" class="container mt-3 bg-light">
+        <a href="/dashboard/"><i class="fa fa-angle-left"></i></a>
+        <h1 class="text-center"><i class="fas fa-receipt me-2"></i>DV History</h1>
+     </div> -->
+     
+
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard.html">
+                <i class="fas fa-receipt me-2"></i>ORSYS-ARY
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+            
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/receipt.html"><i class="fas fa-plus-circle me-1"></i> New Receipt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dv/"><i class="fas fa-plus-circle me-1"></i> Debit Vocucher</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <a class="nav-link active" href="drdashboard.html"><i class="fas fa-history me-1"></i> DV History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/"><i class="fas fa-user me-1"></i> Admin</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <button class="nav-link" id="logout-btn"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+                    </li>                    
+                </ul>
+            </div>
+            
+        </div>
+    </nav> -->
+    
+    <div class="container">
+        <div class="UDNT">
+            <!-- <h1 class="text-center"><i class="fas fa-receipt me-2"></i>DV History</h1> -->
+            <div id="DisplayUserName" class="user-display"></div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Submitted Vouchers</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Slip No</th>
+                                <th>Payment From</th>
+                                <th>Point Person</th>
+                                <th>Mode</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th colspan="2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receipts-table-body">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">Loading receipts...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipt Detail Modal -->
+        <div class="modal fade bg-light" id="receipt-modal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><img class="logo" src="image/ARY_Digital_Logo_2.png" alt=""> Receipt Details</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="receipt-detail-content">
+                        <!-- Receipt details will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fas fa-print me-2"></i>Print</button>
+                    </div>
+                    <div class="receipt-footer">
+                        <p>Thank you for your payment!</p>
+                        <p class="mb-0">Generated by ORSYS-ARY Receipt System</p>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration Loader -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <!-- Universal Navbar -->
+    <script src="/assets/js/navbar.js"></script>
+
+    <script src="/src/scripts/dashboard/drdashboard.js"></script>
+</body>
+</html>

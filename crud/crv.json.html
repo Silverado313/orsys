@@ -1,0 +1,41 @@
+<h1>CRV</h1>
+<pre id="jsonOutput">Loading...</pre>
+<script type="module">
+  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+    apiKey: "DEPRECATED - use configLoader.js",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+
+    async function displayJSON() {
+        
+        const jsonOutput = document.getElementById("jsonOutput");
+        let result = [];
+
+        const querySnapshot = await getDocs(collection(db, "cr.vouchers"));
+            querySnapshot.forEach((doc) => {
+                result.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+
+            jsonOutput.textContent = JSON.stringify(result, null, 2);
+
+    }
+
+    displayJSON();
+
+</script>

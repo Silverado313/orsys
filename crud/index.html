@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Firestore Dynamic Table</title>
+  <style>
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Firestore Data (Dynamic Table)</h2>
+  <table id="dataTable">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    // ⚠️ DEPRECATED TEST FILE - Do not use in production
+    // Use /src/scripts/config/configLoader.js instead
+    console.warn('WARNING: Using deprecated /crud/index.html - migrate to main app');
+    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+    // NOT CONFIGURED - Load from /src/scripts/config/configLoader.js instead
+    const firebaseConfig = {
+      apiKey: "DEPRECATED - use configLoader.js",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: "",
+      measurementId: ""
+    }
+
+    // DEPRECATED - Credentials removed. Use /src/scripts/config/configLoader.js
+    const db = getFirestore(app);
+
+    async function loadTable() {
+      const thead = document.querySelector("#dataTable thead");
+      const tbody = document.querySelector("#dataTable tbody");
+      thead.innerHTML = "";
+      tbody.innerHTML = "";
+
+      const querySnapshot = await getDocs(collection(db, "cr.vouchers"));
+      let allDocs = [];
+
+      querySnapshot.forEach((doc) => {
+        allDocs.push({ id: doc.id, ...doc.data() });
+      });
+
+      if (allDocs.length === 0) {
+        thead.innerHTML = "<tr><th>No Data</th></tr>";
+        return;
+      }
+
+      // 🔹 Auto-generate headers from keys
+      const keys = Object.keys(allDocs[0]);
+      let headerRow = "<tr>";
+      keys.forEach(key => {
+        headerRow += `<th>${key}</th>`;
+      });
+      headerRow += "</tr>";
+      thead.innerHTML = headerRow;
+
+      // 🔹 Fill rows
+      allDocs.forEach(item => {
+        let row = "<tr>";
+        keys.forEach(key => {
+          row += `<td>${item[key] ?? ""}</td>`;
+        });
+        row += "</tr>";
+        tbody.innerHTML += row;
+      });
+    }
+
+    loadTable();
+  </script>
+</body>
+</html>
+
+
+
+<!-- DEPRECATED CODE - Credentials removed -->
+
+    getData();
+
+</script> -->

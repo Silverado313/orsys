@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Complete System Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background: #1a252f;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-header p {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 10px 0;
+        }
+        
+        .nav-menu li a {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-menu li a:hover {
+            background: #34495e;
+            border-left-color: #3498db;
+            padding-left: 25px;
+        }
+        
+        .nav-menu li a.active {
+            background: #34495e;
+            border-left-color: #3498db;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            background: white;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        section h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        section h3 {
+            font-size: 22px;
+            color: #34495e;
+            margin: 25px 0 15px 0;
+        }
+        
+        section h4 {
+            font-size: 18px;
+            color: #555;
+            margin: 20px 0 10px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        
+        table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .info-box {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+            background: #ebf5fb;
+        }
+        
+        .success-box {
+            border-left-color: #27ae60;
+            background: #eafaf1;
+        }
+        
+        .warning-box {
+            border-left-color: #f39c12;
+            background: #fef5e7;
+        }
+        
+        .error-box {
+            border-left-color: #e74c3c;
+            background: #fadbd8;
+        }
+        
+        code {
+            background: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge-admin {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .badge-new {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding: 30px;
+            background: #ecf0f1;
+            text-align: center;
+            border-top: 3px solid #3498db;
+        }
+        
+        @media print {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1>ORSYS-ARY</h1>
+                <p>Documentation v2.0</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#intro" class="active">Introduction & Login</a></li>
+                <li><a href="#dashboard">Main Dashboard</a></li>
+                <li><a href="#crv">Creating CRV</a></li>
+                <li><a href="#cpv">Creating CPV/DV</a></li>
+                <li><a href="#vouchers">Managing Vouchers</a></li>
+                <li><a href="#analytics">Analytics Dashboard</a></li>
+                <li><a href="#verify">Receipt Verification</a></li>
+                <li><a href="#admin">Admin Functions</a></li>
+                <li><a href="#reports">Reports & Exports</a></li>
+                <li><a href="#printing">Printing & Sharing</a></li>
+                <li><a href="#users">User Management</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#reference">Quick Reference</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="header">
+                <h1>ORSYS-ARY System Documentation</h1>
+                <p>Complete guide for financial voucher management system</p>
+            </div>
+            
+            <section id="intro">
+                <h2>1. Introduction & Login</h2>
+                
+                <h3>Step 1: Access the System</h3>
+                <ol>
+                    <li>Open your web browser (Chrome, Firefox, or Safari recommended)</li>
+                    <li>Navigate to: <code>https://orsys-ary.web.app</code></li>
+                    <li>You'll see the login page with ORSYS-ARY branding</li>
+                </ol>
+                
+                <div class="info-box">
+                    <strong>Login Page Features:</strong>
+                    <ul>
+                        <li>Clean, modern interface with gradient design</li>
+                        <li>Email and password fields</li>
+                        <li>"Remember me" option</li>
+                        <li>Forgot password link</li>
+                        <li>Powered by Claude.AI and TechPeer footer</li>
+                    </ul>
+                </div>
+                
+                <h3>Step 2: Login Credentials</h3>
+                <ol>
+                    <li><strong>Enter Email:</strong> Use your authorized company email (e.g., <code>yourname@aryservices.com.pk</code>)</li>
+                    <li><strong>Enter Password:</strong> Your secure password</li>
+                    <li><strong>Optional:</strong> Check "Remember me" to stay logged in</li>
+                    <li>Click <strong>"Login"</strong> button</li>
+                </ol>
+                
+                <h3>Step 3: Authentication Process</h3>
+                <div class="success-box">
+                    <strong>Success:</strong> You'll be redirected to the main dashboard
+                </div>
+                <div class="error-box">
+                    <strong>Failed:</strong> Check:
+                    <ul>
+                        <li>Email is in allowed list</li>
+                        <li>Correct password</li>
+                        <li>Internet connection</li>
+                        <li>Contact admin if issues persist</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="dashboard">
+                <h2>2. Main Dashboard</h2>
+                
+                <h3>Dashboard Layout</h3>
+                <p>After login, you'll see:</p>
+                
+                <h4>Top Navigation Bar</h4>
+                <ul>
+                    <li>ORSYS-ARY logo</li>
+                    <li>User info display</li>
+                    <li>Logout button</li>
+                    <li>Quick access menu</li>
+                </ul>
+                
+                <h4>Main Content Area</h4>
+                <ul>
+                    <li>Welcome message</li>
+                    <li>Quick action buttons</li>
+                    <li>Recent vouchers table</li>
+                    <li>System statistics</li>
+                </ul>
+                
+                <h3>Key Dashboard Features</h3>
+                
+                <h4>Quick Actions</h4>
+                <table>
+                    <tr>
+                        <th>Action</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>New CRV</td>
+                        <td>Create Cash Receipt Voucher</td>
+                    </tr>
+                    <tr>
+                        <td>New CPV</td>
+                        <td>Create Cash Payment Voucher</td>
+                    </tr>
+                    <tr>
+                        <td>View History</td>
+                        <td>See all vouchers</td>
+                    </tr>
+                    <tr>
+                        <td>Analytics</td>
+                        <td>View financial insights</td>
+                    </tr>
+                    <tr>
+                        <td>Admin Panel</td>
+                        <td>System settings (admin only)</td>
+                    </tr>
+                </table>
+                
+                <h4>Recent Vouchers Table</h4>
+                <p>Displays latest 10 vouchers with:</p>
+                <ul>
+                    <li>Slip number</li>
+                    <li>Payment from/to</li>
+                    <li>Point person</li>
+                    <li>Amount</li>
+                    <li>Status</li>
+                    <li>Date</li>
+                    <li>Action buttons (View, Print, Edit)</li>
+                </ul>
+                
+                <h4>Navigation Menu</h4>
+                <pre>
+Dashboard
+Create CRV
+Create CPV
+Voucher History
+Analytics
+Verify Receipt
+Admin Panel
+Reports
+Print/Share
+Settings</pre>
+            </section>
+            
+            <section id="crv">
+                <h2>3. Creating a Cash Receipt Voucher (CRV)</h2>
+                
+                <h3>Step-by-Step Guide</h3>
+                
+                <h4>Step 1: Navigate to CRV Page</h4>
+                <ol>
+                    <li>Click <strong>"Create CRV"</strong> from dashboard</li>
+                    <li>Or go to: <code>/receipt.html</code></li>
+                </ol>
+                
+                <h4>Step 2: Fill Basic Information</h4>
+                
+                <p><strong>Section A: Payer Details</strong></p>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>Cell No</td>
+                        <td>12-digit phone number</td>
+                        <td>923001234567</td>
+                    </tr>
+                    <tr>
+                        <td>Point Person</td>
+                        <td>Who gave the cash</td>
+                        <td>John Smith</td>
+                    </tr>
+                    <tr>
+                        <td>Payment Mode</td>
+                        <td>How payment was made</td>
+                        <td>Cash, HBL, MEZAN</td>
+                    </tr>
+                    <tr>
+                        <td>Payment From</td>
+                        <td>Store/location</td>
+                        <td>Karachi Store</td>
+                    </tr>
+                </table>
+                
+                <p><strong>Section B: Payment Details</strong></p>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>Payment Status</td>
+                        <td>Current status</td>
+                        <td>Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>Transaction date/time</td>
+                        <td>Auto-filled (can adjust)</td>
+                    </tr>
+                    <tr>
+                        <td>User</td>
+                        <td>Your name</td>
+                        <td>Auto-filled</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>Your email</td>
+                        <td>Auto-filled</td>
+                    </tr>
+                    <tr>
+                        <td>Remarks</td>
+                        <td>Additional notes</td>
+                        <td>"Payment for invoice #123"</td>
+                    </tr>
+                </table>
+                
+                <h4>Step 3: Denomination Breakdown</h4>
+                <p>Enter note counts:</p>
+                <pre>
+5000 Notes: ___ × 5000 = PKR 0
+1000 Notes: ___ × 1000 = PKR 0
+500 Notes:  ___ × 500  = PKR 0
+100 Notes:  ___ × 100  = PKR 0
+50 Notes:   ___ × 50   = PKR 0
+20 Notes:   ___ × 20   = PKR 0
+10 Notes:   ___ × 10   = PKR 0
+1 Coins:    ___ × 1    = PKR 0
+
+Total Amount: PKR 0 (Auto-calculates)</pre>
+                
+                <h4>Step 4: Preview & Submit</h4>
+                <ol>
+                    <li><strong>Live Preview:</strong> Right panel shows receipt format</li>
+                    <li><strong>Validate:</strong> Check all fields are correct</li>
+                    <li><strong>Submit:</strong> Click "Submit Voucher" button</li>
+                    <li><strong>Confirmation:</strong> System generates slip number</li>
+                </ol>
+                
+                <h4>Step 5: After Submission</h4>
+                <div class="success-box">
+                    <strong>Success Message:</strong> "Voucher created successfully! Slip #1756735199358"
+                    <br><br>
+                    <strong>Options:</strong>
+                    <ul>
+                        <li>Print Receipt</li>
+                        <li>Share via WhatsApp</li>
+                        <li>Create Another</li>
+                        <li>View in Dashboard</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="cpv">
+                <h2>4. Creating a Cash Payment Voucher (CPV/DV)</h2>
+                
+                <h3>Key Differences from CRV</h3>
+                
+                <h4>Step 1: Navigate to CPV Page</h4>
+                <ol>
+                    <li>Click <strong>"Create CPV"</strong> from dashboard</li>
+                    <li>Or go to: <code>/dv/index.html</code></li>
+                </ol>
+                
+                <h4>Step 2: Additional Field - Payment Head</h4>
+                <p><strong>Payment Head dropdown includes:</strong></p>
+                <ul>
+                    <li>Salary</li>
+                    <li>Office Rent</li>
+                    <li>Utility Bills</li>
+                    <li>Travel Expenses</li>
+                    <li>Office Supplies</li>
+                    <li>Maintenance</li>
+                    <li>Marketing</li>
+                    <li>Other Expenses</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>Note:</strong> Heads are managed by admin in Admin Panel
+                </div>
+                
+                <h4>Step 3: Fill Form Similar to CRV</h4>
+                <p>Same fields as CRV plus:</p>
+                <ul>
+                    <li><strong>Payment Head:</strong> Select appropriate category</li>
+                    <li><strong>Point Person:</strong> Who receives the payment</li>
+                </ul>
+                
+                <h4>Step 4: Preview & Submit</h4>
+                <ol>
+                    <li>Check preview shows "DEBIT VOUCHER" heading</li>
+                    <li>Verify payment head is correct</li>
+                    <li>Submit to generate DV slip number</li>
+                </ol>
+            </section>
+            
+            <section id="vouchers">
+                <h2>5. Viewing & Managing Vouchers</h2>
+                
+                <h3>Access Voucher History</h3>
+                <ol>
+                    <li>From dashboard, click <strong>"Voucher History"</strong></li>
+                    <li>Or navigate to: <code>/dashboard.html</code></li>
+                </ol>
+                
+                <h3>History Dashboard Features</h3>
+                
+                <h4>Filter Options</h4>
+                <pre>
+Search: [Any field]
+Date Range: [Custom dates]
+Status: All / Pending / Completed / Failed
+Payment Mode: All / Cash / HBL / MEZAN / UBL
+User: [Select user]</pre>
+                
+                <h4>Data Table Columns</h4>
+                <table>
+                    <tr>
+                        <th>Column</th>
+                        <th>Sortable</th>
+                        <th>Filterable</th>
+                    </tr>
+                    <tr>
+                        <td>Slip No</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Payment From</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Point Person</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Payment Mode</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Total Amount</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Actions</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                </table>
+                
+                <h4>Action Buttons</h4>
+                <p>Each row has:</p>
+                <ul>
+                    <li><strong>View:</strong> See full details</li>
+                    <li><strong>Edit:</strong> Modify voucher (admin only)</li>
+                    <li><strong>Print:</strong> Print receipt</li>
+                    <li><strong>Share:</strong> Share via WhatsApp/email</li>
+                    <li><strong>Copy:</strong> Copy slip number</li>
+                </ul>
+                
+                <h3>Viewing Voucher Details</h3>
+                <p>Click <strong>"View"</strong> to see:</p>
+                <ol>
+                    <li>Complete receipt format</li>
+                    <li>All entered information</li>
+                    <li>Denomination breakdown</li>
+                    <li>System metadata (created by, timestamp)</li>
+                </ol>
+                
+                <h3>Editing Vouchers <span class="badge badge-admin">Admin Only</span></h3>
+                <ol>
+                    <li>Click <strong>"Edit"</strong> button</li>
+                    <li>Modify necessary fields</li>
+                    <li>Save changes</li>
+                    <li>System logs edit history</li>
+                </ol>
+            </section>
+            
+            <section id="analytics">
+                <h2>6. Analytics Dashboard</h2>
+                
+                <h3>Access Analytics</h3>
+                <ol>
+                    <li>Click <strong>"Analytics"</strong> from main menu</li>
+                    <li>Or go to: <code>/analytics.html</code></li>
+                </ol>
+                
+                <h3>Dashboard Sections</h3>
+                
+                <h4>A. KPI Cards (Top Row)</h4>
+                <p>4 key metrics with trends:</p>
+                <ol>
+                    <li><strong>Total Vouchers:</strong> Count + % change</li>
+                    <li><strong>Total Amount:</strong> PKR value + % change</li>
+                    <li><strong>Pending:</strong> Count + amount</li>
+                    <li><strong>Completion Rate:</strong> % vs 95% target</li>
+                </ol>
+                
+                <h4>B. Charts & Graphs</h4>
+                <table>
+                    <tr>
+                        <th>Chart</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Payment Trend (30 Days)</td>
+                        <td>Line chart showing daily totals, hover for exact values, compare CRV vs DV</td>
+                    </tr>
+                    <tr>
+                        <td>Status Distribution</td>
+                        <td>Pie chart: Completed/Pending/Failed, percentage breakdown</td>
+                    </tr>
+                    <tr>
+                        <td>Department-wise Spending</td>
+                        <td>Bar chart by department/store, color-coded by status</td>
+                    </tr>
+                    <tr>
+                        <td>Top 10 Point Persons</td>
+                        <td>Horizontal bar chart, shows voucher count per person</td>
+                    </tr>
+                    <tr>
+                        <td>Expense Category Breakdown</td>
+                        <td>For CPV only, shows spending by payment head</td>
+                    </tr>
+                    <tr>
+                        <td>Day of Week Analysis</td>
+                        <td>Shows which days have most transactions</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Comparison</td>
+                        <td>Current vs previous year, line chart showing growth/decline</td>
+                    </tr>
+                    <tr>
+                        <td>Amount Range Distribution</td>
+                        <td>Shows frequency of different amount ranges</td>
+                    </tr>
+                </table>
+                
+                <h4>C. Top Performers Table</h4>
+                <p>Ranking of point persons by:</p>
+                <ul>
+                    <li>Total vouchers processed</li>
+                    <li>Total amount handled</li>
+                    <li>Average processing time</li>
+                    <li>Completion rate</li>
+                </ul>
+                
+                <h4>D. Date Range Selector</h4>
+                <p>Filter analytics by:</p>
+                <ul>
+                    <li><strong>7 Days</strong> (last week)</li>
+                    <li><strong>30 Days</strong> (last month)</li>
+                    <li><strong>90 Days</strong> (last quarter)</li>
+                    <li><strong>365 Days</strong> (last year)</li>
+                    <li><strong>Custom Range</strong> (select dates)</li>
+                </ul>
+                
+                <h4>E. Export Options</h4>
+                <ul>
+                    <li><strong>Export Report:</strong> Excel/PDF of current view</li>
+                    <li><strong>Save as Image:</strong> PNG of dashboard</li>
+                    <li><strong>Copy to Clipboard:</strong> Copy summary</li>
+                </ul>
+            </section>
+            
+            <section id="verify">
+                <h2>7. Receipt Verification</h2>
+                
+                <div class="info-box">
+                    <strong>Public Verification Feature:</strong> No login required - anyone can verify receipts
+                </div>
+                
+                <h3>Step-by-Step Verification</h3>
+                
+                <h4>Step 1: Access Verification Page</h4>
+                <ol>
+                    <li>Go to: <code>/verify.html</code></li>
+                    <li>Or click "Verify Receipt" from login page</li>
+                </ol>
+                
+                <h4>Step 2: Enter Slip Number</h4>
+                <ol>
+                    <li>Get slip number from receipt (Format: 13-15 digit number, Example: 1756735199358)</li>
+                    <li>Enter in search box</li>
+                    <li>Click <strong>"Verify"</strong> button</li>
+                </ol>
+                
+                <h4>Step 3: View Verification Results</h4>
+                
+                <div class="success-box">
+                    <strong>VALID RECEIPT (Green):</strong>
+                    <ul>
+                        <li>Shows "This receipt is VERIFIED AND VALID"</li>
+                        <li>Displays full receipt details</li>
+                        <li>Print/share options available</li>
+                    </ul>
+                </div>
+                
+                <div class="error-box">
+                    <strong>INVALID RECEIPT (Red):</strong>
+                    <ul>
+                        <li>Shows "This receipt is NOT FOUND or INVALID"</li>
+                        <li>Suggests checking slip number</li>
+                        <li>Contact information for support</li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>PENDING RECEIPT (Yellow):</strong>
+                    <ul>
+                        <li>Shows "This receipt is PENDING verification"</li>
+                        <li>Basic details shown</li>
+                        <li>Note about pending status</li>
+                    </ul>
+                </div>
+                
+                <h4>Step 4: Verified Receipt Details</h4>
+                <p>Shows complete receipt including:</p>
+                <ul>
+                    <li>Official ORSYS-ARY header</li>
+                    <li>Slip number</li>
+                    <li>Payment details</li>
+                    <li>Denomination breakdown</li>
+                    <li>Total amount</li>
+                    <li>Date and time</li>
+                    <li>Generated by information</li>
+                </ul>
+                
+                <h4>Step 5: Actions for Verified Receipt</h4>
+                <ul>
+                    <li><strong>Print:</strong> Standard browser print</li>
+                    <li><strong>Share:</strong> WhatsApp/email</li>
+                    <li><strong>Copy:</strong> Copy details to clipboard</li>
+                    <li><strong>Verify Another:</strong> New search</li>
+                </ul>
+            </section>
+            
+            <section id="admin">
+                <h2>8. Admin Functions <span class="badge badge-admin">Restricted Access</span></h2>
+                
+                <h3>Admin Panel Access</h3>
+                <p>Restricted to authorized users only</p>
+                
+                <h3>Admin Features</h3>
+                
+                <h4>A. User Management</h4>
+                <ol>
+                    <li><strong>View All Users:</strong> List of registered users</li>
+                    <li><strong>Add New User:</strong> Invite via email</li>
+                    <li><strong>Edit User:</strong> Modify permissions</li>
+                    <li><strong>Disable User:</strong> Temporary deactivation</li>
+                    <li><strong>Login History:</strong> Track user activity</li>
+                </ol>
+                
+                <h4>B. Payment Heads Management</h4>
+                <p>Access: <code>/admin/add-head.html</code></p>
+                
+                <p><strong>Adding New Heads:</strong></p>
+                <ol>
+                    <li>Click <strong>"Add New Head"</strong></li>
+                    <li>Fill form:
+                        <ul>
+                            <li>Head Name: "Marketing Expenses"</li>
+                            <li>Head Code: "MKT001" (optional)</li>
+                            <li>Status: Active/Inactive</li>
+                            <li>Category: Expense/Income/Asset</li>
+                            <li>Description: Optional details</li>
+                        </ul>
+                    </li>
+                    <li>Submit to add to dropdown lists</li>
+                </ol>
+                
+                <p><strong>Managing Existing Heads:</strong></p>
+                <ul>
+                    <li>Edit head details</li>
+                    <li>Change status (active/inactive)</li>
+                    <li>Delete unused heads</li>
+                    <li>Export heads list</li>
+                </ul>
+                
+                <h4>C. System Settings</h4>
+                <ol>
+                    <li><strong>Company Info:</strong> Name, logo, contact</li>
+                    <li><strong>Email Templates:</strong> Customize notifications</li>
+                    <li><strong>Print Settings:</strong> Receipt format options</li>
+                    <li><strong>Security Settings:</strong> Password policies</li>
+                    <li><strong>Backup Settings:</strong> Auto-backup schedule</li>
+                </ol>
+                
+                <h4>D. Audit Logs</h4>
+                <p>View system activities:</p>
+                <ul>
+                    <li>User logins/logouts</li>
+                    <li>Voucher creations/edits</li>
+                    <li>System changes</li>
+                    <li>Export activities</li>
+                    <li>Error logs</li>
+                </ul>
+                
+                <h4>E. Data Management</h4>
+                <ol>
+                    <li><strong>Backup Database:</strong> Manual backup</li>
+                    <li><strong>Restore Database:</strong> From backup</li>
+                    <li><strong>Clean Old Data:</strong> Archive old records</li>
+                    <li><strong>Export All Data:</strong> Complete system export</li>
+                </ol>
+            </section>
+            
+            <section id="reports">
+                <h2>9. Reports & Exports</h2>
+                
+                <h3>Types of Reports Available</h3>
+                
+                <h4>A. Standard Reports</h4>
+                
+                <table>
+                    <tr>
+                        <th>Report Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Daily Transaction Report</td>
+                        <td>All transactions for selected date, summary by payment mode, download as Excel/PDF</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Summary Report</td>
+                        <td>Month-over-month comparison, department-wise breakdown, trend analysis</td>
+                    </tr>
+                    <tr>
+                        <td>Pending Payments Report</td>
+                        <td>All pending vouchers, aging analysis, follow-up reminders</td>
+                    </tr>
+                    <tr>
+                        <td>Point Person Performance</td>
+                        <td>Activity by each point person, completion rates, average amounts</td>
+                    </tr>
+                </table>
+                
+                <h4>B. Advanced Reports</h4>
+                
+                <table>
+                    <tr>
+                        <th>Report Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Financial Statement</td>
+                        <td>Income vs expenses, cash flow statement, balance sheet snapshot</td>
+                    </tr>
+                    <tr>
+                        <td>Tax Compliance Report</td>
+                        <td>Tax-deductible transactions, withholding tax summary, ready for tax filing</td>
+                    </tr>
+                    <tr>
+                        <td>Audit Trail Report</td>
+                        <td>Complete transaction history, user activity log, system changes</td>
+                    </tr>
+                </table>
+                
+                <h3>Generating Reports</h3>
+                
+                <h4>Step 1: Access Reports Section</h4>
+                <ol>
+                    <li>Click <strong>"Reports"</strong> from main menu</li>
+                    <li>Or go to: <code>/reports.html</code></li>
+                </ol>
+                
+                <h4>Step 2: Select Report Type</h4>
+                <ol>
+                    <li>Choose from report categories</li>
+                    <li>Set date range</li>
+                    <li>Apply filters (status, department, etc.)</li>
+                </ol>
+                
+                <h4>Step 3: Configure Export</h4>
+                
+                <p><strong>Export Options:</strong></p>
+                <ul>
+                    <li><strong>PDF:</strong> Print-ready format</li>
+                    <li><strong>Excel:</strong> Data analysis format</li>
+                    <li><strong>CSV:</strong> Simple spreadsheet</li>
+                    <li><strong>Print:</strong> Direct printing</li>
+                    <li><strong>Email:</strong> Send to email addresses</li>
+                </ul>
+                
+                <p><strong>Customization Options:</strong></p>
+                <ul>
+                    <li>Include/exclude columns</li>
+                    <li>Add company header/logo</li>
+                    <li>Set paper size (A4, Letter)</li>
+                    <li>Include summaries/totals</li>
+                </ul>
+                
+                <h4>Step 4: Generate & Download</h4>
+                <ol>
+                    <li>Click <strong>"Generate Report"</strong></li>
+                    <li>Preview on screen</li>
+                    <li>Choose export format</li>
+                    <li>Download/save file</li>
+                </ol>
+                
+                <h3>Automated Reports <span class="badge badge-admin">Admin Only</span></h3>
+                <p>Schedule Reports:</p>
+                <ul>
+                    <li>Daily auto-email at 9 AM</li>
+                    <li>Weekly summary every Monday</li>
+                    <li>Monthly report on 1st of month</li>
+                    <li>Custom schedule options</li>
+                </ul>
+            </section>
+            
+            <section id="printing">
+                <h2>10. Printing & Sharing</h2>
+                
+                <h3>Printing Options</h3>
+                
+                <h4>A. Standard Print</h4>
+                <ol>
+                    <li>From any receipt view, click <strong>"Print"</strong></li>
+                    <li>Browser print dialog opens</li>
+                    <li>Select printer and settings</li>
+                </ol>
+                
+                <p><strong>Print Settings Recommended:</strong></p>
+                <table>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Paper</td>
+                        <td>A4 or Letter</td>
+                    </tr>
+                    <tr>
+                        <td>Orientation</td>
+                        <td>Portrait</td>
+                    </tr>
+                    <tr>
+                        <td>Margins</td>
+                        <td>Default</td>
+                    </tr>
+                    <tr>
+                        <td>Scale</td>
+                        <td>100%</td>
+                    </tr>
+                </table>
+                
+                <h4>B. Custom Print Formats</h4>
+                <ol>
+                    <li><strong>Receipt Format:</strong> Small, thermal-style</li>
+                    <li><strong>A4 Format:</strong> Full page with headers</li>
+                    <li><strong>Multiple per Page:</strong> 2 or 4 receipts per page</li>
+                    <li><strong>Without Backgrounds:</strong> Ink-saving mode</li>
+                </ol>
+                
+                <h4>C. Share Options</h4>
+                
+                <p><strong>1. WhatsApp Sharing:</strong></p>
+                <ul>
+                    <li>Click WhatsApp button</li>
+                    <li>Auto-generates message with receipt details and verification link</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>Example Message:</strong><br>
+                    Receipt #1756735199358<br>
+                    Amount: PKR 25,000<br>
+                    Date: 24-Dec-2024<br>
+                    Status: Completed<br>
+                    View: https://orsys-ary.firebaseapp.com/verify?slip=1756735199358
+                </div>
+                
+                <p><strong>2. Email Sharing:</strong></p>
+                <ul>
+                    <li>Enter recipient emails</li>
+                    <li>Custom subject/message</li>
+                    <li>Attach as PDF/image</li>
+                    <li>Send with one click</li>
+                </ul>
+                
+                <p><strong>3. Direct Link:</strong></p>
+                <ul>
+                    <li>Copy unique URL</li>
+                    <li>Share via any messenger</li>
+                    <li>Recipient can view without login</li>
+                </ul>
+                
+                <p><strong>4. QR Code:</strong></p>
+                <ul>
+                    <li>Each receipt has QR code</li>
+                    <li>Scan to view receipt</li>
+                    <li>Contains verification URL</li>
+                </ul>
+                
+                <h4>D. Export as Image/PDF</h4>
+                
+                <p><strong>As Image (PNG/JPEG):</strong></p>
+                <ul>
+                    <li>High-resolution copy</li>
+                    <li>Suitable for digital records</li>
+                    <li>Can be edited if needed</li>
+                </ul>
+                
+                <p><strong>As PDF:</strong></p>
+                <ul>
+                    <li>Vector format (best quality)</li>
+                    <li>Searchable text</li>
+                    <li>Multiple receipts in one PDF</li>
+                    <li>Password protection option</li>
+                </ul>
+                
+                <h3>Bulk Operations</h3>
+                <ol>
+                    <li><strong>Print Multiple:</strong> Select multiple vouchers, Print All</li>
+                    <li><strong>Share Batch:</strong> Send multiple receipts via email</li>
+                    <li><strong>Export Range:</strong> Export date range as single PDF</li>
+                </ol>
+            </section>
+            
+            <section id="users">
+                <h2>11. User Management</h2>
+                
+                <h3>User Roles & Permissions</h3>
+                
+                <h4>Role Levels</h4>
+                
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Permissions</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Super Admin</strong></td>
+                        <td>All system functions, user management, system configuration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin</strong></td>
+                        <td>Create/edit vouchers, view all data, generate reports (cannot manage users)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User</strong></td>
+                        <td>Create vouchers (own only), view own vouchers, basic reports, no admin functions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Viewer</strong></td>
+                        <td>View all vouchers, export/print, no creation/editing</td>
+                    </tr>
+                </table>
+                
+                <h3>Managing Your Account</h3>
+                
+                <h4>Profile Settings</h4>
+                <ol>
+                    <li><strong>View Profile:</strong> Click user name in top-right</li>
+                    <li><strong>Edit Profile:</strong> Update name, contact info</li>
+                    <li><strong>Change Password:</strong> Regular updates recommended</li>
+                    <li><strong>Profile Picture:</strong> Upload/change photo</li>
+                </ol>
+                
+                <h4>Preferences</h4>
+                <table>
+                    <tr>
+                        <th>Preference</th>
+                        <th>Options</th>
+                    </tr>
+                    <tr>
+                        <td>Language</td>
+                        <td>English/Urdu</td>
+                    </tr>
+                    <tr>
+                        <td>Date Format</td>
+                        <td>DD/MM/YYYY or MM/DD/YYYY</td>
+                    </tr>
+                    <tr>
+                        <td>Currency</td>
+                        <td>PKR (default)</td>
+                    </tr>
+                    <tr>
+                        <td>Theme</td>
+                        <td>Light/Dark mode</td>
+                    </tr>
+                    <tr>
+                        <td>Notifications</td>
+                        <td>Email/SMS alerts</td>
+                    </tr>
+                </table>
+                
+                <h4>Security Features</h4>
+                
+                <p><strong>1. Two-Factor Authentication (Optional):</strong></p>
+                <ul>
+                    <li>SMS verification</li>
+                    <li>Authenticator app</li>
+                </ul>
+                
+                <p><strong>2. Additional Security:</strong></p>
+                <ul>
+                    <li><strong>Login Alerts:</strong> Email on new login</li>
+                    <li><strong>Session Timeout:</strong> Auto-logout after inactivity</li>
+                    <li><strong>Password History:</strong> Prevent reuse</li>
+                </ul>
+                
+                <h3>Team Management <span class="badge badge-admin">Admin Only</span></h3>
+                
+                <h4>Adding Team Members</h4>
+                <ol>
+                    <li>Go to Admin → Users → Add User</li>
+                    <li>Enter email address</li>
+                    <li>Assign role</li>
+                    <li>Send invitation</li>
+                    <li>User receives email with setup instructions</li>
+                </ol>
+                
+                <h4>Monitoring Team Activity</h4>
+                <ul>
+                    <li>Last login times</li>
+                    <li>Vouchers created today</li>
+                    <li>Pending actions</li>
+                    <li>Performance metrics</li>
+                </ul>
+            </section>
+            
+            <section id="troubleshooting">
+                <h2>12. Troubleshooting</h2>
+                
+                <h3>Common Issues & Solutions</h3>
+                
+                <h4>Login Problems</h4>
+                
+                <div class="error-box">
+                    <strong>Issue:</strong> "Invalid email or password"<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Check caps lock</li>
+                        <li>Reset password</li>
+                        <li>Contact admin if email not recognized</li>
+                    </ol>
+                </div>
+                
+                <div class="error-box">
+                    <strong>Issue:</strong> Page not loading<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Clear browser cache</li>
+                        <li>Try different browser</li>
+                        <li>Check internet connection</li>
+                    </ol>
+                </div>
+                
+                <h4>Voucher Creation Issues</h4>
+                
+                <div class="warning-box">
+                    <strong>Issue:</strong> Form not submitting<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Check required fields (red asterisks)</li>
+                        <li>Ensure valid phone number (12 digits)</li>
+                        <li>Check denomination values (numbers only)</li>
+                    </ol>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>Issue:</strong> Slip number not generating<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Check internet connection</li>
+                        <li>Refresh page and try again</li>
+                        <li>Contact admin if persists</li>
+                    </ol>
+                </div>
+                
+                <h4>Printing Issues</h4>
+                
+                <div class="info-box">
+                    <strong>Issue:</strong> Print not working<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Check printer connection</li>
+                        <li>Try "Save as PDF" first</li>
+                        <li>Use Chrome browser (best compatibility)</li>
+                    </ol>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Issue:</strong> Format messed up<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Use "Print Preview" first</li>
+                        <li>Adjust scale to 100%</li>
+                        <li>Select "Receipt" paper size</li>
+                    </ol>
+                </div>
+                
+                <h4>Data Issues</h4>
+                
+                <div class="warning-box">
+                    <strong>Issue:</strong> Can't find old voucher<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Check date range in filters</li>
+                        <li>Search by slip number</li>
+                        <li>Contact admin for archive access</li>
+                    </ol>
+                </div>
+                
+                <div class="error-box">
+                    <strong>Issue:</strong> Wrong amounts showing<br><br>
+                    <strong>Solution:</strong>
+                    <ol>
+                        <li>Check denomination calculations</li>
+                        <li>Verify payment mode</li>
+                        <li>Report to admin for correction</li>
+                    </ol>
+                </div>
+                
+                <h3>Getting Help</h3>
+                
+                <h4>Support Channels</h4>
+                
+                <p><strong>1. In-System Help:</strong></p>
+                <ul>
+                    <li>Click "?" icon on any page</li>
+                    <li>Context-sensitive help</li>
+                    <li>Video tutorials</li>
+                </ul>
+                
+                <p><strong>2. Email Support:</strong></p>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Email</th>
+                        <th>Response Time</th>
+                    </tr>
+                    <tr>
+                        <td>Technical</td>
+                        <td>support@techpeer.web.app</td>
+                        <td>Within 24 hours</td>
+                    </tr>
+                    <tr>
+                        <td>Admin</td>
+                        <td>admin@aryservices.com.pk</td>
+                        <td>Within 24 hours</td>
+                    </tr>
+                </table>
+                
+                <p><strong>3. Phone Support:</strong></p>
+                <ul>
+                    <li>During business hours</li>
+                    <li>Contact numbers in footer</li>
+                </ul>
+                
+                <p><strong>4. User Manual:</strong></p>
+                <ul>
+                    <li>Download PDF guide</li>
+                    <li>Video walkthroughs</li>
+                    <li>FAQ section</li>
+                </ul>
+                
+                <h4>Emergency Procedures</h4>
+                
+                <table>
+                    <tr>
+                        <th>Emergency</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>System Down</td>
+                        <td>Contact admin immediately</td>
+                    </tr>
+                    <tr>
+                        <td>Data Loss</td>
+                        <td>Restore from latest backup</td>
+                    </tr>
+                    <tr>
+                        <td>Security Breach</td>
+                        <td>Change passwords, notify all users</td>
+                    </tr>
+                    <tr>
+                        <td>Payment Discrepancy</td>
+                        <td>Freeze related vouchers, notify finance</td>
+                    </tr>
+                </table>
+                
+                <h3>Best Practices</h3>
+                
+                <h4>Daily Routine</h4>
+                <ol>
+                    <li>Login and check pending vouchers</li>
+                    <li>Create new vouchers as needed</li>
+                    <li>Review daily report at EOD</li>
+                    <li>Logout properly (don't just close browser)</li>
+                </ol>
+                
+                <h4>Data Security</h4>
+                <ol>
+                    <li>Never share login credentials</li>
+                    <li>Logout when leaving computer</li>
+                    <li>Regular password changes</li>
+                    <li>Report suspicious activity immediately</li>
+                </ol>
+                
+                <h4>System Maintenance</h4>
+                <ol>
+                    <li>Clear browser cache weekly</li>
+                    <li>Update browser regularly</li>
+                    <li>Backup important data locally</li>
+                    <li>Report bugs via system feedback</li>
+                </ol>
+            </section>
+            
+            <section id="reference">
+                <h2>Quick Reference Guide</h2>
+                
+                <h3>Keyboard Shortcuts</h3>
+                <table>
+                    <tr>
+                        <th>Shortcut</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + N</td>
+                        <td>New Voucher</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + F</td>
+                        <td>Find/Search</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + P</td>
+                        <td>Print</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + S</td>
+                        <td>Save/Save As</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + E</td>
+                        <td>Export</td>
+                    </tr>
+                    <tr>
+                        <td>Esc</td>
+                        <td>Cancel/Close</td>
+                    </tr>
+                    <tr>
+                        <td>F5</td>
+                        <td>Refresh</td>
+                    </tr>
+                    <tr>
+                        <td>F1</td>
+                        <td>Help</td>
+                    </tr>
+                </table>
+                
+                <h3>Important URLs</h3>
+                <table>
+                    <tr>
+                        <th>Page</th>
+                        <th>URL</th>
+                    </tr>
+                    <tr>
+                        <td>Login</td>
+                        <td>https://orsys-ary.firebaseapp.com</td>
+                    </tr>
+                    <tr>
+                        <td>Dashboard</td>
+                        <td>/dashboard.html</td>
+                    </tr>
+                    <tr>
+                        <td>Create CRV</td>
+                        <td>/receipt.html</td>
+                    </tr>
+                    <tr>
+                        <td>Create CPV</td>
+                        <td>/dv/index.html</td>
+                    </tr>
+                    <tr>
+                        <td>Verify</td>
+                        <td>/verify.html</td>
+                    </tr>
+                    <tr>
+                        <td>Analytics</td>
+                        <td>/analytics.html</td>
+                    </tr>
+                    <tr>
+                        <td>Reports</td>
+                        <td>/reports.html</td>
+                    </tr>
+                    <tr>
+                        <td>Admin</td>
+                        <td>/admin/add-head.html</td>
+                    </tr>
+                </table>
+                
+                <h3>Contact Information</h3>
+                <table>
+                    <tr>
+                        <th>Contact</th>
+                        <th>Details</th>
+                    </tr>
+                    <tr>
+                        <td>System Admin</td>
+                        <td>Syed Aneel Raza</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>aneel@aryservices.com.pk</td>
+                    </tr>
+                    <tr>
+                        <td>Support</td>
+                        <td>support@techpeer.web.app</td>
+                    </tr>
+                    <tr>
+                        <td>Website</td>
+                        <td>https://techpeer.web.app</td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>+92 309 0404 293</td>
+                    </tr>
+                </table>
+                
+                <h3>Office Hours Support</h3>
+                <table>
+                    <tr>
+                        <th>Day</th>
+                        <th>Hours</th>
+                    </tr>
+                    <tr>
+                        <td>Monday - Friday</td>
+                        <td>9:00 AM - 6:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>10:00 AM - 2:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>Closed</td>
+                    </tr>
+                    <tr>
+                        <td>Emergency</td>
+                        <td>24/7 on-call for critical issues</td>
+                    </tr>
+                </table>
+                
+                <h3>System Updates & News</h3>
+                
+                <h4>Latest Updates (December 2024) <span class="badge badge-new">New</span></h4>
+                <ol>
+                    <li>New Feature: Analytics dashboard with Chart.js</li>
+                    <li>Enhanced: DataTables with export buttons</li>
+                    <li>Improved: Mobile responsive design</li>
+                    <li>Added: QR code generation for receipts</li>
+                    <li>Fixed: Various bug fixes and performance improvements</li>
+                </ol>
+                
+                <h4>Coming Soon</h4>
+                <ol>
+                    <li>Mobile app (iOS/Android)</li>
+                    <li>SMS notifications</li>
+                    <li>Advanced budgeting module</li>
+                    <li>Integration with accounting software</li>
+                    <li>Multi-language support (Urdu)</li>
+                </ol>
+                
+                <h3>Final Notes</h3>
+                
+                <h4>System Availability</h4>
+                <ul>
+                    <li><strong>Uptime:</strong> 99.9% guaranteed</li>
+                    <li><strong>Backups:</strong> Daily automatic</li>
+                    <li><strong>Security:</strong> Regular updates and patches</li>
+                    <li><strong>Support:</strong> Dedicated technical team</li>
+                </ul>
+                
+                <h4>Training Resources</h4>
+                <ol>
+                    <li><strong>Video Tutorials:</strong> Available in help section</li>
+                    <li><strong>Live Training:</strong> Monthly webinar sessions</li>
+                    <li><strong>User Manual:</strong> Comprehensive PDF guide</li>
+                    <li><strong>Quick Start Guide:</strong> One-page cheat sheet</li>
+                </ol>
+                
+                <h4>Feedback & Improvements</h4>
+                <p>We value your feedback! Please:</p>
+                <ol>
+                    <li>Use in-system feedback form</li>
+                    <li>Report bugs immediately</li>
+                    <li>Suggest new features</li>
+                    <li>Share your experience</li>
+                </ol>
+                
+                <div class="info-box" style="margin-top: 30px;">
+                    <strong>Remember:</strong> ORSYS-ARY is designed to make your financial operations easier, faster, and more secure. If you have any questions or need assistance, don't hesitate to reach out to the support team!
+                </div>
+            </section>
+            
+            <div class="footer">
+                <p><strong>ORSYS-ARY Complete System Documentation</strong></p>
+                <p>Last Updated: December 2024 | Document Version: 2.0</p>
+                <p>Powered by Claude.AI and TechPeer</p>
+                <p style="margin-top: 10px;">© 2024 ARY Services. All rights reserved.</p>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-menu a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Smooth scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        
+        // Highlight active section on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

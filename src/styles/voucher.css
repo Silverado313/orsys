@@ -1,0 +1,171 @@
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+    }
+    
+    body {
+        background-color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .navbar-brand {
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        border: none;
+    }
+    
+    .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+        font-weight: 600;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .receipt-container {
+
+        background: white;
+        border: 1px dashed #ccc;
+        padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        line-height: 1rem;
+    }
+    
+    .topHead {
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .receipt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        border-bottom: 2px solid #4361ee;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .Qr {
+        width: 7rem;
+    }
+
+    .Logo {
+        width: 5.5rem;
+    }
+
+    .receipt-details {
+        margin-bottom: 20px;
+    }
+    
+    textarea {
+        width: -webkit-fill-available;
+        height: 5rem;
+        word-wrap: break-word;
+    }
+
+    .receipt-footer {
+        border-top: 2px solid #4361ee;
+        padding-top: 15px;
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .verification-status {
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .verified {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .not-verified {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    .search-box {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    /* .authSign {
+        position: absolute;
+        bottom: 0;
+        width: auto;
+        padding: 1rem;
+        background-color: #c41919;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+    } */
+
+    .centered-list {
+        text-align: center;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .centered-list ul {
+        display: inline-block;
+        padding: 0;
+        margin: 0;   
+    }
+
+    .centered-list li {
+        display: inline-block;
+        margin: 0 9px;
+        list-style: circle; 
+        font-size: small;
+        font-weight: bold;
+    }
+
+    .share-controls {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .btn-whatsapp {
+        background-color: #25d366;
+        border-color: #25d366;
+        color: white;
+    }    
+
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+
+        .verification-status {
+            display: none !important;
+        }
+    }

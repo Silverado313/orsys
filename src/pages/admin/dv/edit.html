@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Update Voucher</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- Spinner Loader CSS -->
+    <style>
+        body {
+            background-color: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+        #overlay {
+            background: #fff;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        #loader {
+            display: block;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #9370db;
+            animation: spin 2s linear infinite;
+        }
+        #loader:before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #ba55d3;
+            animation: spin 3s linear infinite;
+        }
+        #loader:after {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #ff00ff;
+            animation: spin 1.5s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .denomination-input {
+            width: 80px;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Overlay Spinner -->
+    <div id="overlay">
+        <div id="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/dashboard">
+                <i class="fas fa-edit me-2"></i>Update Voucher
+            </a>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-outline-light btn-sm" id="logout-btn">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="fas fa-edit me-2"></i>Update Voucher</h2>
+                        <div>
+                            <a href="index.html" class="btn btn-secondary btn-sm me-2">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Reports
+                            </a>
+                            <a href="#" id="viewReceiptBtn" class="btn btn-info btn-sm" style="display: none;">
+                                <i class="fas fa-eye me-1"></i>View Receipt
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Loading Message -->
+                    <div id="loading-message" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading voucher data...</p>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error-message" class="alert alert-danger" style="display: none;">
+                        <h5>Error</h5>
+                        <p id="error-text"></p>
+                    </div>
+
+                    <!-- Update Form -->
+                    <form id="updateVoucherForm" style="display: none;">
+                        <!-- Basic Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="slipNo" class="form-label">Slip Number</label>
+                                <input type="text" class="form-control" id="slipNo" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="paymentStatus" class="form-label">Payment Status</label>
+                                <select class="form-control" id="paymentStatus" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Failed">Failed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="paymentFrom" class="form-label">Payment From</label>
+                                <input type="text" class="form-control" id="paymentFrom" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pointPerson" class="form-label">Point Person</label>
+                                <input type="text" class="form-control" id="pointPerson" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="paymentMode" class="form-label">Payment Mode</label>
+                                <input type="text" class="form-control" id="paymentMode">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="user" class="form-label">User</label>
+                                <input type="text" class="form-control" id="user" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="remarks" class="form-label">Remarks</label>
+                            <textarea class="form-control" id="remarks" rows="3"></textarea>
+                        </div>
+
+                        <!-- Denomination Section -->
+                        <h5 class="mb-3"><i class="fas fa-money-bill-wave me-2"></i>Denomination Breakdown</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno5000" class="form-label">5000 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno5000" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount5000">0</span></small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno1000" class="form-label">1000 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno1000" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount1000">0</span></small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno500" class="form-label">500 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno500" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount500">0</span></small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno100" class="form-label">100 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno100" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount100">0</span></small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno50" class="form-label">50 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno50" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount50">0</span></small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno20" class="form-label">20 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno20" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount20">0</span></small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno10" class="form-label">10 Notes</label>
+                                <input type="number" class="form-control denomination-input" id="deno10" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount10">0</span></small>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <label for="deno1" class="form-label">1 Coins</label>
+                                <input type="number" class="form-control denomination-input" id="deno1" min="0" value="0">
+                                <small class="text-muted">Amount: <span id="amount1">0</span></small>
+                            </div>
+                        </div>
+
+                        <!-- Total Display -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <h5 class="mb-0">Total Amount: PKR <span id="totalAmount">0</span></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg me-3">
+                                <i class="fas fa-save me-2"></i>Update Voucher
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-lg" onclick="resetForm()">
+                                <i class="fas fa-undo me-2"></i>Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle me-2"></i>Success
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <p>Voucher updated successfully!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase Configuration Loader (secure) -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <script>
+        let currentVoucher = null;
+        let currentDocId = null;
+
+        // Check authentication
+        function checkAuthState() {
+            const allowedEmails = [
+                'aneel@aryservices.com.pk',
+                'mohiuddin.siddiqui@aryservices.com.pk',
+                'qasim@aryservices.com.pk',
+                'khizar.ansari@aryservices.com.pk',
+                'essa@aryservices.com.pk'                
+            ];
+            
+            auth.onAuthStateChanged(function(user) {
+                if (!user) {
+                    // alert('Not Allowed');
+                    // document.body.style.backgroundColor = '#fff';
+                    // window.location.href = '/dashboard.html';
+                    return;
+                }
+                
+                const isAllowedEmail = allowedEmails.includes(user.email);
+                
+                if (!isAllowedEmail) {
+                    window.location.href = '/dashboard/';
+                }
+            });
+        }
+
+        // Logout function
+function logoutUser() {
+    if (confirm('Are you sure you want to logout?')) {
+        auth.signOut().then(() => {
+            window.location.href = '/';
+        }).catch((error) => {
+            console.error('Logout error:', error);
+            alert('Error during logout: ' + error.message);
+        });
+    }
+}
+
+        // Load voucher data
+        function loadVoucher(slipNo) {
+            db.collection("dr.vouchers")
+                .where("slipNo", "==", parseInt(slipNo))
+                .get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        showError(`No voucher found with slip number: ${slipNo}`);
+                        return;
+                    }
+                    
+                    const doc = querySnapshot.docs[0];
+                    currentDocId = doc.id;
+                    currentVoucher = doc.data();
+                    populateForm(currentVoucher);
+                    
+                    // Show form and hide loading
+                    document.getElementById('loading-message').style.display = 'none';
+                    document.getElementById('updateVoucherForm').style.display = 'block';
+                    document.getElementById('viewReceiptBtn').style.display = 'inline-block';
+                    document.getElementById('viewReceiptBtn').href = `shareView.html?slip=${slipNo}`;
+                    
+                    // Hide overlay
+                    const overlay = document.getElementById("overlay");
+                    if (overlay) overlay.style.display = "none";
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+                    showError(`Error loading voucher: ${error.message}`);
+                    
+                    // Hide overlay
+                    const overlay = document.getElementById("overlay");
+                    if (overlay) overlay.style.display = "none";
+                });
+        }
+
+        // Populate form with voucher data
+        function populateForm(voucher) {
+            document.getElementById('slipNo').value = voucher.slipNo || '';
+            document.getElementById('paymentFrom').value = voucher.paymentFrom || '';
+            document.getElementById('pointPerson').value = voucher.pointPerson || '';
+            document.getElementById('paymentMode').value = voucher.paymentMode || '';
+            document.getElementById('paymentStatus').value = voucher.paymentStatus || '';
+            document.getElementById('user').value = voucher.user || '';
+            document.getElementById('remarks').value = voucher.remarks || '';
+            
+            // Denomination fields
+            document.getElementById('deno5000').value = voucher.deno5000 || 0;
+            document.getElementById('deno1000').value = voucher.deno1000 || 0;
+            document.getElementById('deno500').value = voucher.deno500 || 0;
+            document.getElementById('deno100').value = voucher.deno100 || 0;
+            document.getElementById('deno50').value = voucher.deno50 || 0;
+            document.getElementById('deno20').value = voucher.deno20 || 0;
+            document.getElementById('deno10').value = voucher.deno10 || 0;
+            document.getElementById('deno1').value = voucher.deno1 || 0;
+            
+            // Calculate and display amounts
+            calculateAmounts();
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('loading-message').style.display = 'none';
+            document.getElementById('error-text').textContent = message;
+            document.getElementById('error-message').style.display = 'block';
+        }
+
+        // Calculate denomination amounts
+        function calculateAmounts() {
+            const denominations = [5000, 1000, 500, 100, 50, 20, 10, 1];
+            let total = 0;
+            
+            denominations.forEach(denom => {
+                const count = parseInt(document.getElementById(`deno${denom}`).value) || 0;
+                const amount = count * denom;
+                document.getElementById(`amount${denom}`).textContent = amount.toLocaleString();
+                total += amount;
+            });
+            
+            document.getElementById('totalAmount').textContent = total.toLocaleString();
+        }
+
+        // Reset form to original values
+        function resetForm() {
+            if (currentVoucher) {
+                populateForm(currentVoucher);
+            }
+        }
+
+        // Update voucher
+        function updateVoucher(formData) {
+            const overlay = document.getElementById("overlay");
+            if (overlay) overlay.style.display = "block";
+            
+            db.collection("dr.vouchers").doc(currentDocId)
+                .update(formData)
+                .then(() => {
+                    console.log("Voucher updated successfully!");
+                    
+                    // Hide overlay
+                    if (overlay) overlay.style.display = "none";
+                    
+                    // Show success modal
+                    const modal = new bootstrap.Modal(document.getElementById('successModal'));
+                    modal.show();
+                    
+                    // Update current voucher data
+                    currentVoucher = { ...currentVoucher, ...formData };
+                })
+                .catch((error) => {
+                    console.error("Error updating voucher: ", error);
+                    if (overlay) overlay.style.display = "none";
+                    alert("Error updating voucher: " + error.message);
+                });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            checkAuthState();
+            
+            // Get slip parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const slipNo = urlParams.get('slip');
+            
+            if (!slipNo) {
+                showError('No slip number provided in URL. Please use a valid link like: /udatevoucher.html?slip=1756735199358');
+                return;
+            }
+            
+            // Load voucher data
+            loadVoucher(slipNo);
+            
+            // Add event listeners
+            document.getElementById('logout-btn').addEventListener('click', logoutUser);
+            
+            // Add denomination change listeners
+            ['deno5000', 'deno1000', 'deno500', 'deno100', 'deno50', 'deno20', 'deno10', 'deno1'].forEach(id => {
+                document.getElementById(id).addEventListener('input', calculateAmounts);
+            });
+            
+            // Form submit handler
+            document.getElementById('updateVoucherForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = {
+                    paymentFrom: document.getElementById('paymentFrom').value.trim(),
+                    pointPerson: document.getElementById('pointPerson').value.trim(),
+                    paymentMode: document.getElementById('paymentMode').value.trim(),
+                    paymentStatus: document.getElementById('paymentStatus').value,
+                    remarks: document.getElementById('remarks').value.trim(),
+                    deno5000: parseInt(document.getElementById('deno5000').value) || 0,
+                    deno1000: parseInt(document.getElementById('deno1000').value) || 0,
+                    deno500: parseInt(document.getElementById('deno500').value) || 0,
+                    deno100: parseInt(document.getElementById('deno100').value) || 0,
+                    deno50: parseInt(document.getElementById('deno50').value) || 0,
+                    deno20: parseInt(document.getElementById('deno20').value) || 0,
+                    deno10: parseInt(document.getElementById('deno10').value) || 0,
+                    deno1: parseInt(document.getElementById('deno1').value) || 0,
+                    lastModifiedUpdated: firebase.firestore.Timestamp.now()
+                };
+                
+                // Validate required fields
+                if (!formData.paymentFrom || !formData.pointPerson || !formData.paymentStatus) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Update voucher
+                updateVoucher(formData);
+            });
+        });
+    </script>
+</body>
+<!-- Design & Developed by: Syed Aneel Raza -->
+</html>

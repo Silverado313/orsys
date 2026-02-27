@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Online Receipt System</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/styles.css"> -->
+
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+
+     <div id="backAngle" class="container mt-3 bg-light ">
+        <!-- <a href="/dashboard/"><i class="fa fa-angle-left"></i></a> -->
+        <h1><i class="fa fa-receipt"></i> Cash Receipt Voucher</h1>
+     </div>
+
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard.html">
+                <i class="fas fa-receipt me-2"></i>ORSYS-ARY
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+            
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/receipt.html"><i class="fas fa-plus-circle me-1"></i> New Receipt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dv/"><i class="fas fa-plus-circle me-1"></i> Debit Vocucher</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard.html"><i class="fas fa-history me-1"></i> Receipt History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/"><i class="fas fa-user me-1"></i> Admin</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <button class="nav-link" id="logout-btn"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+                    </li>                    
+                </ul>
+            </div>
+            
+        </div>
+    </nav> -->
+
+    <div class="container mt-4">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <div class="MyClassView">
+            <!-- Form Section -->
+            <section id="form-section" class="card">
+                <div class="card-header">
+                    <i class="fas fa-plus-circle me-2"></i>Create New Receipt Voucher
+                </div>
+                <div class="card-body">
+                    <form id="voucher-form">
+                        <div class="row mb-3">
+
+                            <div class="col-md-4">
+                                <label for="cellNo" class="form-label">Cell No*</label>
+                                <input type="text" class="form-control" minlength="12" maxlength="12" id="cellNo" placeholder="92***********" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="pointPerson" class="form-label">Point Person*</label>
+                                <input type="text" class="form-control" id="pointPerson" required placeholder="Cash Received from">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="paymentMode" class="form-label">Payment Mode*</label>
+                                <select class="form-control" id="paymentMode" required>
+                                    <option value="Select Mode" selected disabled>Select Mode</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="HBL">HBL</option>
+                                    <option value="MEZAN">MEZAN</option>
+                                    <option value="UBL">UBL</option>
+                                    <option value="HMBL">HMBL</option>
+                                    <option value="DIBL">DIBL</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        
+                        <div class="row mb-3">
+
+
+                            <div class="col-md-4">
+                                <label for="paymentFrom" class="form-label">Payment From*</label>
+                                <input type="text" class="form-control" id="paymentFrom" required placeholder="Store / Location">
+                            </div>                        
+
+
+                            <div class="col-md-4">
+                                <label for="paymentStatus" class="form-label">Payment Status*</label>
+                                <select class="form-control" id="paymentStatus" required>
+                                    <option value="Select Status" selected disabled>Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Failed">Failed</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="paymentDate" class="form-label">Set Date*</label>
+                                    
+                                    <input type="datetime-local" class="form-control" id="paymentDate">
+
+                                    <script>
+                                    const input = document.getElementById("paymentDate");
+
+                                    // today
+                                    const today = new Date();
+                                    const yyyy = today.getFullYear();
+                                    const mm = String(today.getMonth() + 1).padStart(2, "0");
+                                    const dd = String(today.getDate()).padStart(2, "0");
+                                    const hh = String(today.getHours()).padStart(2, "0");
+                                    const min = String(today.getMinutes()).padStart(2, "0");
+
+                                    // one month back
+                                    const oneMonthBack = new Date(today);
+                                    oneMonthBack.setMonth(today.getMonth() - 1);
+                                    const yyyyBack = oneMonthBack.getFullYear();
+                                    const mmBack = String(oneMonthBack.getMonth() + 1).padStart(2, "0");
+                                    const ddBack = String(oneMonthBack.getDate()).padStart(2, "0");
+                                    const hhBack = String(oneMonthBack.getHours()).padStart(2, "0");
+                                    const minBack = String(oneMonthBack.getMinutes()).padStart(2, "0");
+
+                                    // set min / max attributes (datetime-local format)
+                                    input.min = `${yyyyBack}-${mmBack}-${ddBack}T${hhBack}:${minBack}`;
+                                    input.max = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+                                    </script>
+
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="user" class="form-label">User*</label>
+                                <input type="text" class="form-control" id="user" required readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email*</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="remarks" class="form-label">Remarks</label>
+                                <textarea class="form-control" id="remarks" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Denomination Details</h5>    
+
+                        <div class="row g-3">
+                            
+                            <div class="col-md-3">
+                                <label for="deno5000" class="form-label">5000 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno5000" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno1000" class="form-label">1000 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno1000" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno500" class="form-label">500 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno500" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno100" class="form-label">100 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno100" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno50" class="form-label">50 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno50" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno20" class="form-label">20 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno20" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno10" class="form-label">10 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno10" min="0" value="0">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label for="deno1" class="form-label">01 Denomination</label>
+                                <input type="number" class="form-control denomination-input" id="deno1" min="0" value="0">
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">5000 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno5000" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">1000 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno1000" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">500 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno500" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">100 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno100" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">50 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno50" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">20 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno20" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">10 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno10" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="row denomination-row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">01 Denomination</label>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="number" class="form-control denomination-input" id="deno1" min="0" value="0">
+                            </div>
+                        </div> -->
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>Submit Voucher
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2">
+                                    <button type="reset" onclick="window.location.reload()" class="btn btn-outline-secondary btn-lg">
+                                        <i class="fas fa-undo me-2"></i>Reset Form
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Receipt Preview Section -->
+            <!-- <section id="receipt-preview" class="card mt-4 no-print"> -->
+            <section id="receipt-preview" class="card">
+            
+                <div class="card-header">
+                    <i class="fas fa-receipt me-2"></i>Receipt Preview
+                </div>
+                <div class="card-body">
+                    <div class="receipt-container">
+                        <div class="receipt-header">
+                            <h3>OFFICIAL RECEIPT VOUCHER</h3>
+                            <p class="mb-0">ORSYS-ARY Receipt System</p>
+                        </div>
+                        
+                        <div class="receipt-details">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><strong>Slip No:</strong> <span id="preview-slipNo">-</span></p>
+                                    <p><strong>Payment Mode:</strong> <span id="preview-paymentMode">-</span></p>
+                                    <p><strong>Payment From:</strong> <span id="preview-paymentFrom">-</span></p>
+                                    <p><strong>Point Person:</strong> <span id="preview-pointPerson">-</span></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Cell No:</strong> <span id="preview-cellNo">-</span></p>
+                                    <p><strong>Date:</strong> <span id="preview-date">-</span></p>
+                                    <p><strong>Payment Status:</strong> <span id="preview-paymentStatus">-</span></p>
+                                    <p><strong>User:</strong> <span id="preview-user">-</span></p>
+                                </div>
+                            </div>
+                            
+                            <p><strong>Remarks:</strong> <span id="preview-remarks">-</span></p>
+                            
+                            <h5 class="mt-4">Denomination Breakdown</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Denomination</th>
+                                        <th>Count</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="denomination-preview">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-primary">
+                                        <th colspan="2">Total Cash</th>
+                                        <th id="preview-totalCash">0.00</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                        <div class="receipt-footer">
+                            <p>Thank you for your payment!</p>
+                            <p class="mb-0">Generated by ORSYS-ARY Receipt System</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>    
+    </div>
+
+    <!-- Firebase Configuration Loader -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+    
+    <script src="/assets/js/navbar.js"></script>
+    
+    <!-- Custom Script -->
+    <script src="/src/scripts/vouchers/insert.js"></script>
+
+    
+</body>
+</html>

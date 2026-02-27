@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY Dashboard</title>
+    
+    <!-- 
+        ========================================================================
+        DASHBOARD ANALYTICS SYSTEM
+        ========================================================================
+        Purpose: Executive management dashboard with real-time financial analytics
+        
+        Key Metrics:
+        - Financial Overview (Revenue, Expenses, Trends)
+        - Department-wise Analysis
+        - Point Person Performance
+        - Payment Status Distribution
+        - Time-series Trends
+        - Budget Utilization
+        
+        Chart Library: Chart.js 4.4.0
+        Framework: Bootstrap 5.3.0
+        Icons: Font Awesome 6.4.0
+        Backend: Firebase Firestore
+        
+        Last Updated: December 24, 2024
+        ========================================================================
+    -->
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --danger-gradient: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Dashboard Header */
+        .dashboard-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-header h1 {
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .dashboard-header .subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        /* KPI Cards */
+        .kpi-card {
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .kpi-card.primary { background: var(--primary-gradient); }
+        .kpi-card.success { background: var(--success-gradient); }
+        .kpi-card.danger { background: var(--danger-gradient); }
+        .kpi-card.warning { background: var(--warning-gradient); }
+        .kpi-card.info { background: var(--info-gradient); }
+        
+        .kpi-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .kpi-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .kpi-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .kpi-trend {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        
+        .trend-up { color: #a8e6cf; }
+        .trend-down { color: #ffcccc; }
+        
+        /* Chart Cards */
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .chart-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .chart-card h5 {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .chart-card h5 i {
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .chart-container-large {
+            position: relative;
+            height: 400px;
+        }
+        
+        /* Date Range Selector */
+        .date-selector {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .date-selector .btn-group {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .kpi-value { font-size: 2rem; }
+            .chart-container { height: 250px; }
+            .chart-container-large { height: 300px; }
+        }
+        
+        /* Export Button */
+        .export-btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .export-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="text-center">
+            <div class="loader"></div>
+            <p class="mt-3 text-muted">Loading Dashboard...</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-chart-line me-3"></i>Financial Analytics Dashboard</h1>
+                    <p class="subtitle mb-0">Real-time voucher & payment insights</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <p class="mb-1"><i class="far fa-calendar me-2"></i><span id="currentDate"></span></p>
+                    <p class="mb-0"><i class="far fa-clock me-2"></i><span id="currentTime"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid px-4">
+        
+        <!-- Date Range Selector -->
+        <div class="date-selector">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h6 class="mb-0"><i class="fas fa-filter me-2"></i>Time Period</h6>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-period="7">7 Days</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary active" data-period="30">30 Days</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-period="90">90 Days</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-period="365">1 Year</button>
+                    </div>
+                    <button class="btn btn-sm export-btn ms-3" id="exportDashboard">
+                        <i class="fas fa-download me-2"></i>Export Report
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards Row -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="kpi-card primary">
+                    <i class="fas fa-file-invoice-dollar kpi-icon"></i>
+                    <div class="kpi-label">Total Vouchers</div>
+                    <div class="kpi-value" id="kpiTotalVouchers">0</div>
+                    <div class="kpi-trend trend-up" id="voucherTrend">
+                        <i class="fas fa-arrow-up me-1"></i>0% from last period
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="kpi-card success">
+                    <i class="fas fa-money-bill-wave kpi-icon"></i>
+                    <div class="kpi-label">Total Amount</div>
+                    <div class="kpi-value" id="kpiTotalAmount">PKR 0</div>
+                    <div class="kpi-trend trend-up" id="amountTrend">
+                        <i class="fas fa-arrow-up me-1"></i>0% from last period
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="kpi-card warning">
+                    <i class="fas fa-clock kpi-icon"></i>
+                    <div class="kpi-label">Pending</div>
+                    <div class="kpi-value" id="kpiPending">0</div>
+                    <div class="kpi-trend" id="pendingTrend">
+                        <i class="fas fa-minus me-1"></i>PKR 0
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="kpi-card info">
+                    <i class="fas fa-percentage kpi-icon"></i>
+                    <div class="kpi-label">Completion Rate</div>
+                    <div class="kpi-value" id="kpiCompletionRate">0%</div>
+                    <div class="kpi-trend trend-up" id="completionTrend">
+                        <i class="fas fa-check-circle me-1"></i>Target: 95%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1: Trend & Status Distribution -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="chart-card">
+                    <h5><i class="fas fa-chart-line"></i>Payment Trend Analysis (30 Days)</h5>
+                    <div class="chart-container-large">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="chart-card">
+                    <h5><i class="fas fa-chart-pie"></i>Payment Status Distribution</h5>
+                    <div class="chart-container">
+                        <canvas id="statusPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2: Department & Point Person -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="chart-card">
+                    <h5><i class="fas fa-building"></i>Head-wise Spending</h5>
+                    <div class="chart-container">
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="chart-card">
+                    <h5><i class="fas fa-users"></i>Top 10 Point Persons by Volume</h5>
+                    <div class="chart-container">
+                        <canvas id="pointPersonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 3: Budget & Category -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="chart-card">
+                    <h5><i class="fas fa-layer-group"></i>Expense Category Breakdown</h5>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="chart-card">
+                    <h5><i class="fas fa-calendar-week"></i>Vouchers by Day of Week</h5>
+                    <div class="chart-container">
+                        <canvas id="dayOfWeekChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 4: Amount Distribution & Monthly Comparison -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="chart-card">
+                    <h5><i class="fas fa-chart-bar"></i>Monthly Comparison (Current vs Previous Year)</h5>
+                    <div class="chart-container-large">
+                        <canvas id="monthlyComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="chart-card">
+                    <h5><i class="fas fa-dollar-sign"></i>Amount Range Distribution</h5>
+                    <div class="chart-container">
+                        <canvas id="amountRangeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performers Table -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="chart-card">
+                    <h5><i class="fas fa-trophy"></i>Top Performers & Key Metrics</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Point Person</th>
+                                    <th>Department</th>
+                                    <th>Total Vouchers</th>
+                                    <th>Total Amount</th>
+                                    <th>Avg. Processing Time</th>
+                                    <th>Completion Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topPerformersTable">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">Loading data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+    
+    <!-- Firebase Config Loader -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+    
+    <!-- Navbar -->
+    <script src="/assets/js/navbar.js"></script>
+    
+    <!-- Dashboard Script -->
+    <script src="/src/scripts/dashboard/dashboard.js"></script>
+
+</body>
+<!-- Design & Developed by: Syed Aneel Raza -->
+</html>

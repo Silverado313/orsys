@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Cash Payment Voucher</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Navbar CSS -->
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+
+    <style>
+        /* ================================ */
+        /* PRINT POPUP OVERLAY              */
+        /* ================================ */
+        #print-popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #print-popup.show {
+            display: flex;
+        }
+
+        .popup-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .popup-card .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .popup-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: #1a1a1a;
+        }
+
+        .popup-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .popup-card .slip-badge {
+            background: #f0f4ff;
+            border: 1px solid #c5d3f7;
+            border-radius: 8px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #3a5bbf;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .btn-print-go {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-print-go:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(102,126,234,0.5);
+            color: white;
+        }
+
+        .btn-skip {
+            margin-top: 0.75rem;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 0.88rem;
+            cursor: pointer;
+            width: 100%;
+            transition: color 0.2s;
+        }
+
+        .btn-skip:hover { color: #555; }
+    </style>
+</head>
+<body>
+
+    <!-- Page Header -->
+    <div id="backAngle" class="container mt-3 bg-light">
+        <h1><i class="fa fa-receipt"></i> Cash Payment Voucher</h1>
+    </div>
+
+    <div class="container mt-4">
+
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <div class="MyClassView">
+
+            <!-- ======================== -->
+            <!-- FORM SECTION             -->
+            <!-- ======================== -->
+            <section id="form-section" class="card">
+                <div class="card-header">
+                    <i class="fas fa-plus-circle me-2"></i>Create New Debit Voucher
+                </div>
+                <div class="card-body">
+                    <form id="voucher-form">
+
+                        <!-- Row 1: Cell, Point Person, Payment Mode -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="cellNo" class="form-label">Cell No*</label>
+                                <input type="text" class="form-control"
+                                       id="cellNo"
+                                       placeholder="92***********"
+                                       minlength="12" maxlength="12"
+                                       pattern="[0-9]{12}"
+                                       title="Must be exactly 12 digits, numbers only"
+                                       required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="pointPerson" class="form-label">Point Person*</label>
+                                <input type="text" class="form-control"
+                                       id="pointPerson"
+                                       placeholder="Cash Paid To"
+                                       required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="paymentMode" class="form-label">Payment Mode*</label>
+                                <select class="form-control" id="paymentMode" required>
+                                    <option value="" selected disabled>Select Mode</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="HBL">HBL</option>
+                                    <option value="MEZAN">MEZAN</option>
+                                    <option value="UBL">UBL</option>
+                                    <option value="HMBL">HMBL</option>
+                                    <option value="DIBL">DIBL</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Payment From, Status, Payment Head -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="paymentFrom" class="form-label">Payment From*</label>
+                                <input type="text" class="form-control"
+                                       id="paymentFrom"
+                                       placeholder="Store / Location"
+                                       required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="paymentStatus" class="form-label">Payment Status*</label>
+                                <select class="form-control" id="paymentStatus" required>
+                                    <option value="" selected disabled>Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Failed">Failed</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <!-- ✅ Fixed: select is clean, script moved to bottom -->
+                                <label for="paymentHead" class="form-label">Payment Head*</label>
+                                <select class="form-control" id="paymentHead" required>
+                                    <option value="" disabled selected>Loading heads...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: User, Email -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="user" class="form-label">User*</label>
+                                <input type="text" class="form-control" id="user" required readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- ✅ Fixed: readonly — user can't change their own email -->
+                                <label for="email" class="form-label">Email*</label>
+                                <input type="email" class="form-control" id="email" required readonly>
+                            </div>
+                        </div>
+
+                        <!-- Row 4: Remarks -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="remarks" class="form-label">Remarks</label>
+                                <textarea class="form-control" id="remarks" rows="2"
+                                          placeholder="Optional notes..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Denomination Section -->
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Denomination Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label for="deno5000" class="form-label">5000</label>
+                                <input type="number" class="form-control denomination-input" id="deno5000" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno1000" class="form-label">1000</label>
+                                <input type="number" class="form-control denomination-input" id="deno1000" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno500" class="form-label">500</label>
+                                <input type="number" class="form-control denomination-input" id="deno500" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno100" class="form-label">100</label>
+                                <input type="number" class="form-control denomination-input" id="deno100" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno50" class="form-label">50</label>
+                                <input type="number" class="form-control denomination-input" id="deno50" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno20" class="form-label">20</label>
+                                <input type="number" class="form-control denomination-input" id="deno20" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno10" class="form-label">10</label>
+                                <input type="number" class="form-control denomination-input" id="deno10" min="0" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="deno1" class="form-label">01</label>
+                                <input type="number" class="form-control denomination-input" id="deno1" min="0" value="0">
+                            </div>
+                        </div>
+
+                        <!-- Submit / Reset Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                        <i class="fas fa-paper-plane me-2"></i>Submit Voucher
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-grid">
+                                    <button type="reset" onclick="window.location.reload()"
+                                            class="btn btn-outline-secondary btn-lg">
+                                        <i class="fas fa-undo me-2"></i>Reset Form
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+
+            <!-- ======================== -->
+            <!-- LIVE PREVIEW SECTION     -->
+            <!-- ======================== -->
+            <section id="receipt-preview" class="card mt-4">
+                <div class="card-header">
+                    <i class="fas fa-receipt me-2"></i>Debit Voucher Preview
+                </div>
+                <div class="card-body">
+                    <div class="receipt-container">
+                        <div class="receipt-header">
+                            <h3>OFFICIAL DEBIT VOUCHER</h3>
+                            <p class="mb-0">ORSYS-ARY DV System</p>
+                        </div>
+                        <div class="receipt-details">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><strong>Slip No:</strong> <span id="preview-slipNo">-</span></p>
+                                    <p><strong>Payment Mode:</strong> <span id="preview-paymentMode">-</span></p>
+                                    <p><strong>Payment From:</strong> <span id="preview-paymentFrom">-</span></p>
+                                    <p><strong>Point Person:</strong> <span id="preview-pointPerson">-</span></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Cell No:</strong> <span id="preview-cellNo">-</span></p>
+                                    <p><strong>Date:</strong> <span id="preview-date">-</span></p>
+                                    <p><strong>Payment Status:</strong> <span id="preview-paymentStatus">-</span></p>
+                                    <p><strong>Payment Head:</strong> <span id="preview-paymentHead">-</span></p>
+                                    <p><strong>User:</strong> <span id="preview-user">-</span></p>
+                                </div>
+                            </div>
+                            <p><strong>Remarks:</strong> <span id="preview-remarks">-</span></p>
+                            <h5 class="mt-4">Denomination Breakdown</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Denomination</th>
+                                        <th>Count</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="denomination-preview"></tbody>
+                                <tfoot>
+                                    <tr class="table-primary">
+                                        <th colspan="2">Total Cash</th>
+                                        <th id="preview-totalCash">0.00</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="receipt-footer">
+                            <p>Thank you for your payment!</p>
+                            <p class="mb-0">Generated by ORSYS-ARY DV System</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PRINT POPUP (shown after successful submit)  -->
+    <!-- ============================================ -->
+    <div id="print-popup">
+        <div class="popup-card">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h4>Voucher Submitted!</h4>
+            <p>Your debit voucher has been saved successfully.</p>
+            <div class="slip-badge">
+                <i class="fas fa-hashtag me-1"></i>Slip No: <span id="popup-slip-no">—</span>
+            </div>
+            <button class="btn-print-go" onclick="goToPrint()">
+                <i class="fas fa-print me-2"></i>Print / Share Voucher
+            </button>
+            <button class="btn-skip" onclick="closePopup()">
+                Skip for now
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS (all at bottom ✅)                   -->
+    <!-- ============================================ -->
+
+    <!-- Firebase Config & Validation -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <!-- Bootstrap JS ✅ Fixed: moved to bottom -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Navbar -->
+    <script src="/assets/js/navbar.js"></script>
+
+    <!-- ============================================ -->
+    <!-- HEADS LOADER                                 -->
+    <!-- ✅ Fixed: moved out of <select> tag          -->
+    <!-- ============================================ -->
+    <script>
+    function loadHeads() {
+        const headSelect = document.getElementById('paymentHead');
+        headSelect.innerHTML = '<option value="" disabled selected>Loading heads...</option>';
+
+        firebase.firestore()
+            .collection('head')
+            .orderBy('name')
+            .get()
+            .then((snapshot) => {
+                headSelect.innerHTML = '<option value="" disabled selected>Select Head</option>';
+                if (snapshot.empty) {
+                    headSelect.innerHTML = '<option value="" disabled>No heads found</option>';
+                    return;
+                }
+                snapshot.forEach((doc) => {
+                    const option = document.createElement('option');
+                    option.value       = doc.data().name;
+                    option.textContent = doc.data().name;
+                    headSelect.appendChild(option);
+                });
+            })
+            .catch((err) => {
+                console.error('Error loading heads:', err);
+                headSelect.innerHTML = '<option value="" disabled>Error loading heads</option>';
+            });
+    }
+
+    // Wait for Firebase to initialize then load heads
+    const waitForHeads = setInterval(() => {
+        if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+            clearInterval(waitForHeads);
+            loadHeads();
+        }
+    }, 300);
+    </script>
+
+    <!-- ============================================ -->
+    <!-- PRINT POPUP LOGIC                            -->
+    <!-- ============================================ -->
+    <script>
+    let lastSlipNo = null;
+
+    /**
+     * Call this from insertdv.js after successful Firestore save.
+     *
+     * Example in insertdv.js:
+     *   const slipNo = Date.now();
+     *   await firebase.firestore().collection('dr.vouchers').add({ slipNo, ... });
+     *   showPrintPopup(slipNo);  // ← add this line
+     */
+    function showPrintPopup(slipNo) {
+        lastSlipNo = slipNo;
+        document.getElementById('popup-slip-no').textContent = slipNo;
+        document.getElementById('print-popup').classList.add('show');
+    }
+
+    function goToPrint() {
+        if (lastSlipNo) {
+            window.open(`/src/pages/dv/print.html?slip=${lastSlipNo}`, '_blank');
+        }
+    }
+
+    function closePopup() {
+        document.getElementById('print-popup').classList.remove('show');
+    }
+
+    // Close if clicking outside popup card
+    document.getElementById('print-popup').addEventListener('click', function(e) {
+        if (e.target === this) closePopup();
+    });
+    </script>
+
+    <!-- Main DV Insert Script -->
+    <script src="/src/scripts/dv/insertdv.js"></script>
+
+</body>
+</html>

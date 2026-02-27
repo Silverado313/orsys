@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY - Login</title>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="app.webmanifest">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Config Loader (Firebase initialization) -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <!-- Custom CSS -->
+    <!-- <link rel="stylesheet" href="ksrc/styles/main.css"> -->
+    
+    <style>
+        /* 1. LAYOUT SETUP 
+           Using Flexbox column direction on the body allows us to:
+           - Fill the viewport height (min-height: 100vh)
+           - Push the footer to the bottom
+           - Center the content in the remaining space
+        */
+        body {
+            background-color: #f0f2f5;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        /* 2. CENTERING WRAPPER
+           This div wraps the login container.
+           flex: 1 makes it grow to fill all available space between top of page and footer.
+           justify-content/align-items center places the card in the middle.
+        */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* 3. CARD STYLING */
+        .login-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .login-header {
+            background: #0d6efd; /* Bootstrap Primary */
+            background: linear-gradient(45deg, #0d6efd, #0a58ca);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .login-header h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .login-body {
+            padding: 2rem;
+        }
+        
+        /* Form Controls */
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-right: none;
+            color: #6c757d;
+        }
+        
+        .form-control {
+            border-left: none;
+            padding: 0.7rem 1rem;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #dee2e6;
+        }
+
+        /* Focus state for the whole input group */
+        .input-group:focus-within {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+            border-radius: 0.375rem;
+        }
+        
+        .btn-login {
+            background: #0d6efd;
+            color: white;
+            padding: 0.7rem;
+            font-weight: 600;
+            width: 100%;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .btn-login:hover {
+            background: #0b5ed7;
+            transform: translateY(-1px);
+        }
+        
+        /* Footer Styling */
+        .loginFooter {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #6c757d;
+            background-color: transparent;
+        }
+        
+        .loginFooter a {
+            color: #495057;
+            font-weight: 600;
+        }
+        
+        .loginFooter a:hover {
+            color: #0d6efd;
+        }
+
+        a {text-decoration: none;}
+    </style>
+</head>
+
+<body>
+
+    <!-- Wrapped the login container in a main-content div for centering -->
+    <div class="main-content">
+        <div class="login-container">
+            
+            <div class="login-header">
+                <h2><i class="fas fa-receipt me-2"></i><span class="brand-text">ORSYS-ARY</span></h2>
+                <p class="mb-0 small opacity-75">Online Receipt System</p>
+            </div>
+
+            <div class="login-body">
+                <div id="alert-container"></div>
+                
+                <form id="login-form">
+                    <div class="mb-3">
+                        <label for="email" class="form-label small fw-bold text-muted">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" autocomplete="email" class="form-control" id="email" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label small fw-bold text-muted">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" autocomplete="current-password" class="form-control" id="password" placeholder="Enter your password" required>
+                            <span class="input-group-text" id="togglePassword">
+                                <i class="fas fa-eye-slash" id="eyeIcon"></i>
+                            </span>                            
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label small" for="rememberMe">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-login mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                    </button>
+                    
+                    <div class="text-center">
+                        <a href="#" id="forgot-password" class="text-decoration-none small text-muted">Forgot your password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer remains outside the centering wrapper so it sits at bottom -->
+    <footer class="loginFooter">
+        Powered by: Claude.AI | Developed by: <a href="https://techpeer.web.app" target="_blank">TechPeer</a> | v4.0 | Documentation v<a href="/docs/" target="_blank" rel="noopener noreferrer">2.0</a>
+    </footer>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('SW registered successfully');
+            })
+            .catch((error) => {
+                console.log('SW registration failed');
+            });
+        }
+    </script>
+
+    <!-- Configuration & Auth Scripts (Load in order) -->
+    <!-- Auth handler -->
+    <script src="/src/scripts/auth/sign-in.js"></script>
+    
+    <!-- 
+      (Optional) UI Demo Script: 
+      Simulates button loading state. You can remove this block if your actual 
+      sign-in.js handles the UI state.
+    -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            // NOTE: In production, remove this e.preventDefault() if sign-in.js handles the event listener.
+            // This is just to show the layout doesn't break on submit.
+            if(!window.firebase) { 
+                 e.preventDefault();
+                 const btn = this.querySelector('button[type="submit"]');
+                 const originalHTML = btn.innerHTML;
+                 btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Authenticating...';
+                 btn.disabled = true;
+                 setTimeout(() => {
+                     btn.innerHTML = originalHTML;
+                     btn.disabled = false;
+                     // Show mock error since firebase isn't actually configured in this preview
+                     document.getElementById('alert-container').innerHTML = 
+                        '<div class="alert alert-info py-2 small">Layout Test: Login clicked.</div>';
+                 }, 1500);
+            }
+        });
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    togglePassword.addEventListener('click', function () {
+        // Toggle the type attribute between 'password' and 'text'
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        // Toggle the eye icon (slash or open eye)
+        eyeIcon.classList.toggle('fa-eye-slash');
+        eyeIcon.classList.toggle('fa-eye');
+    });
+</script>
+</body>
+</html>

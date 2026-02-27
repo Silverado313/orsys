@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS - Modern Digital Receipt System for Businesses</title>
+    <meta name="description" content="Go paperless with ORSYS. Create, manage, and track digital receipts and vouchers effortlessly. Save time, reduce errors, and impress your customers.">
+    <meta name="keywords" content="digital receipts, online voucher system, receipt software, paperless receipts, business management">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="ORSYS - Digital Receipt System">
+    <meta property="og:description" content="Modern receipt management for modern businesses">
+    <meta property="og:image" content="https://getorsys.com/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://getorsys.com">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/images/hero-bg.jpg" as="image">
+    <link rel="preload" href="assets/css/style.css" as="style">
+    
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="container">
+            <span class="announcement-text">
+                🎉 <strong>Launch Special:</strong> Get 50% off for the first year! 
+                <a href="#pricing" class="announcement-link">Claim Offer →</a>
+            </span>
+            <button class="announcement-close" aria-label="Close announcement">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32">
+                            <rect x="4" y="8" width="24" height="18" rx="2" fill="#4361ee" opacity="0.9"/>
+                            <rect x="8" y="12" width="16" height="2" fill="white"/>
+                            <rect x="8" y="16" width="12" height="2" fill="white"/>
+                            <rect x="8" y="20" width="8" height="2" fill="white"/>
+                            <path d="M6 28 L26 28 L22 24 L10 24 Z" fill="#38ef7d"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">ORSYS</span>
+                </a>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#features" class="nav-link">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#solutions" class="nav-link">Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#pricing" class="nav-link">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#customers" class="nav-link">Customers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="blog.html" class="nav-link">Resources</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-text">Sign In</a>
+                <a href="#cta" class="btn btn-primary">Start Free Trial</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <div class="logo">
+                        <span class="logo-text">ORSYS</span>
+                    </div>
+                    <button class="mobile-menu-close" aria-label="Close menu">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <ul class="mobile-nav-list">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#solutions">Solutions</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#customers">Customers</a></li>
+                    <li><a href="blog.html">Resources</a></li>
+                    <li><a href="login.html">Sign In</a></li>
+                    <li><a href="#cta" class="btn btn-primary">Start Free Trial</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge">
+                        <i class="fas fa-bolt"></i>
+                        Modern Receipt Management
+                    </span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Go Paperless. Save Time.
+                    <span class="gradient-text">Impress Customers.</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    ORSYS helps businesses create, manage, and track digital receipts effortlessly. 
+                    Replace paper receipts with a professional, eco-friendly solution that saves you 
+                    time and money.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#cta" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket"></i>
+                        Start Free Trial
+                    </a>
+                    <a href="#demo" class="btn btn-outline btn-lg">
+                        <i class="fas fa-play-circle"></i>
+                        Watch Demo
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Businesses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1M+</span>
+                        <span class="stat-label">Receipts Created</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Satisfaction</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">85%</span>
+                        <span class="stat-label">Time Saved</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <div class="dashboard-preview">
+                    <img src="assets/images/dashboard-preview.png" alt="ORSYS Dashboard Preview" loading="lazy">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-receipt"></i>
+                        <span>Receipt Created</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Sales +25%</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Mobile Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Trusted By -->
+    <section class="trusted-by">
+        <div class="container">
+            <p class="trusted-title">Trusted by forward-thinking companies</p>
+            <div class="trusted-logos">
+                <div class="logo-item">
+                    <img src="assets/images/logos/company1.svg" alt="Company 1" loading="lazy">
+                </div>
+                <div class="logo-item">
+                    <img src="assets/images/logos/company2.svg" alt="Company 2" loading="lazy">
+                </div>
+                <div class="logo-item">
+                    <img src="assets/images/logos/company3.svg" alt="Company 3" loading="lazy">
+                </div>
+                <div class="logo-item">
+                    <img src="assets/images/logos/company4.svg" alt="Company 4" loading="lazy">
+                </div>
+                <div class="logo-item">
+                    <img src="assets/images/logos/company5.svg" alt="Company 5" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Features</span>
+                <h2 class="section-title">Everything you need for modern receipt management</h2>
+                <p class="section-subtitle">
+                    From creating receipts to advanced analytics, ORSYS has you covered
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Receipt Creation</h3>
+                    <p class="feature-description">
+                        Create professional receipts in seconds with our intuitive interface. 
+                        Auto-fill customer details, calculate totals, and apply taxes automatically.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Custom receipt templates</li>
+                        <li><i class="fas fa-check"></i> Auto calculations</li>
+                        <li><i class="fas fa-check"></i> Multi-language support</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Mobile-First Design</h3>
+                    <p class="feature-description">
+                        Access ORSYS anywhere, anytime. Our mobile app lets you create and 
+                        send receipts on the go, even without internet.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> iOS & Android apps</li>
+                        <li><i class="fas fa-check"></i> Offline mode</li>
+                        <li><i class="fas fa-check"></i> Push notifications</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="feature-title">Advanced Analytics</h3>
+                    <p class="feature-description">
+                        Turn receipts into insights. Track sales, identify trends, and make 
+                        data-driven decisions with our powerful analytics dashboard.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Real-time dashboards</li>
+                        <li><i class="fas fa-check"></i> Custom reports</li>
+                        <li><i class="fas fa-check"></i> Export to Excel/PDF</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Seamless Integrations</h3>
+                    <p class="feature-description">
+                        Connect ORSYS with your existing tools. Works with accounting software, 
+                        POS systems, and CRMs out of the box.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> QuickBooks & Xero</li>
+                        <li><i class="fas fa-check"></i> Shopify & WooCommerce</li>
+                        <li><i class="fas fa-check"></i> Custom API access</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Bank-Level Security</h3>
+                    <p class="feature-description">
+                        Your data is protected with enterprise-grade security. SOC 2 compliant, 
+                        end-to-end encryption, and regular audits.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> GDPR compliant</li>
+                        <li><i class="fas fa-check"></i> Two-factor authentication</li>
+                        <li><i class="fas fa-check"></i> Daily backups</li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3 class="feature-title">White-Label Ready</h3>
+                    <p class="feature-description">
+                        Brand ORSYS as your own. Customize everything from colors to domains 
+                        for a seamless brand experience.
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Custom branding</li>
+                        <li><i class="fas fa-check"></i> Your own domain</li>
+                        <li><i class="fas fa-check"></i> Reseller options</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="features-cta">
+                <a href="features.html" class="btn btn-outline">
+                    View All Features <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Simple & Fast</span>
+                <h2 class="section-title">Get started in 3 easy steps</h2>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Sign Up & Customize</h3>
+                        <p>Create your account and customize your settings. Add your logo, colors, and business information.</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Create Your First Receipt</h3>
+                        <p>Use our simple interface to create a professional receipt in under 60 seconds.</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Send & Track</h3>
+                        <p>Send receipts via email, SMS, or WhatsApp. Track opens and views in real-time.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-video">
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <img src="assets/images/video-thumbnail.jpg" alt="ORSYS Demo Video" loading="lazy">
+                        <button class="play-button" onclick="openVideoModal()">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solutions" class="solutions">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Solutions</span>
+                <h2 class="section-title">Perfect for your industry</h2>
+                <p class="section-subtitle">
+                    Tailored solutions for different business needs
+                </p>
+            </div>
+            
+            <div class="solutions-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="retail">Retail</button>
+                    <button class="tab-button" data-tab="restaurants">Restaurants</button>
+                    <button class="tab-button" data-tab="healthcare">Healthcare</button>
+                    <button class="tab-button" data-tab="services">Professional Services</button>
+                    <button class="tab-button" data-tab="education">Education</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div class="tab-pane active" id="retail">
+                        <div class="tab-content-inner">
+                            <div class="tab-image">
+                                <img src="assets/images/solutions/retail.jpg" alt="Retail Solution" loading="lazy">
+                            </div>
+                            <div class="tab-text">
+                                <h3>Retail Stores</h3>
+                                <p>Perfect for boutiques, supermarkets, and online stores. Manage sales receipts, returns, and customer communications efficiently.</p>
+                                <ul>
+                                    <li><i class="fas fa-check"></i> Quick checkout with fast receipt generation</li>
+                                    <li><i class="fas fa-check"></i> Customer database with purchase history</li>
+                                    <li><i class="fas fa-check"></i> Inventory tracking integration</li>
+                                    <li><i class="fas fa-check"></i> Loyalty program support</li>
+                                </ul>
+                                <a href="solutions.html#retail" class="btn btn-outline">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Other tabs would be similar -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Pricing</span>
+                <h2 class="section-title">Simple, transparent pricing</h2>
+                <p class="section-subtitle">
+                    Start free, upgrade as you grow. No hidden fees.
+                </p>
+            </div>
+            
+            <div class="pricing-toggle">
+                <span>Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricing-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Yearly <span class="discount-badge">Save 20%</span></span>
+            </div>
+            
+            <div class="pricing-cards">
+                <!-- Lite Plan -->
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Lite</h3>
+                        <p class="plan-description">Perfect for startups & small businesses</p>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount" data-monthly="29" data-yearly="278">29</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="billing-info">Billed <span class="billing-period">monthly</span></p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <h4>What's included:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Up to 500 receipts/month</li>
+                            <li><i class="fas fa-check"></i> Basic receipt templates</li>
+                            <li><i class="fas fa-check"></i> Email receipts</li>
+                            <li><i class="fas fa-check"></i> Web dashboard</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-times"></i> Custom branding</li>
+                            <li><i class="fas fa-times"></i> API access</li>
+                            <li><i class="fas fa-times"></i> Mobile app</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-action">
+                        <a href="#cta" class="btn btn-outline">Start Free Trial</a>
+                    </div>
+                </div>
+                
+                <!-- Pro Plan (Most Popular) -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <h3 class="plan-name">Pro</h3>
+                        <p class="plan-description">For growing businesses</p>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount" data-monthly="99" data-yearly="950">99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="billing-info">Billed <span class="billing-period">monthly</span></p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <h4>Everything in Lite, plus:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Unlimited receipts</li>
+                            <li><i class="fas fa-check"></i> Custom branding</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            <li><i class="fas fa-check"></i> API access</li>
+                            <li><i class="fas fa-check"></i> Mobile apps</li>
+                            <li><i class="fas fa-check"></i> Multi-user access</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-times"></i> White-label</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-action">
+                        <a href="#cta" class="btn btn-primary">Start Free Trial</a>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Enterprise</h3>
+                        <p class="plan-description">For large organizations</p>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount" data-monthly="299" data-yearly="2870">299</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="billing-info">Billed <span class="billing-period">monthly</span></p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <h4>Everything in Pro, plus:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> White-label solution</li>
+                            <li><i class="fas fa-check"></i> Dedicated support</li>
+                            <li><i class="fas fa-check"></i> Custom development</li>
+                            <li><i class="fas fa-check"></i> SLA guarantee</li>
+                            <li><i class="fas fa-check"></i> On-premise option</li>
+                            <li><i class="fas fa-check"></i> Advanced security</li>
+                            <li><i class="fas fa-check"></i> Training sessions</li>
+                            <li><i class="fas fa-check"></i> Custom integrations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-action">
+                        <a href="contact.html" class="btn btn-outline">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pricing-faq">
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Is there a free trial?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! All plans come with a 14-day free trial. No credit card required to start.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Can I cancel anytime?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Absolutely. Cancel anytime with no penalties. We'll even help you export your data.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Do you offer discounts for NGOs?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, we offer special pricing for non-profit organizations. Contact us for details.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Is my data secure?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Your data is protected with bank-level security, regular backups, and GDPR compliance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="customers" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Testimonials</span>
+                <h2 class="section-title">Loved by businesses worldwide</h2>
+            </div>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial-slide active">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            <p>"ORSYS cut our receipt processing time by 80%. What used to take 15 minutes now takes 3. Our customers love the digital receipts!"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="assets/images/testimonials/user1.jpg" alt="Sarah Chen" loading="lazy">
+                            <div class="author-info">
+                                <h4>Sarah Chen</h4>
+                                <p>Owner, Bloom Boutique</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More slides would be added here -->
+                
+                <div class="slider-controls">
+                    <button class="slider-prev"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <button class="slider-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="case-studies">
+                <h3>Featured Case Studies</h3>
+                <div class="case-studies-grid">
+                    <a href="case-study1.html" class="case-study-card">
+                        <div class="case-study-logo">
+                            <img src="assets/images/cases/company1.svg" alt="Company Logo" loading="lazy">
+                        </div>
+                        <h4>How Urban Cafe Increased Repeat Business by 40%</h4>
+                        <p>Read how digital receipts helped this cafe build customer loyalty.</p>
+                        <span class="read-more">Read Case Study <i class="fas fa-arrow-right"></i></span>
+                    </a>
+                    
+                    <a href="case-study2.html" class="case-study-card">
+                        <div class="case-study-logo">
+                            <img src="assets/images/cases/company2.svg" alt="Company Logo" loading="lazy">
+                        </div>
+                        <h4>Medical Center Saves 120 Hours Monthly on Paperwork</h4>
+                        <p>Discover how a healthcare provider went completely paperless.</p>
+                        <span class="read-more">Read Case Study <i class="fas fa-arrow-right"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to transform your receipt management?</h2>
+                <p class="cta-subtitle">Join 500+ businesses that have gone paperless with ORSYS.</p>
+                
+                <div class="cta-form">
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Your work email" required>
+                            <button type="submit" class="btn btn-primary">
+                                Start Free Trial <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <p class="form-note">
+                            <i class="fas fa-shield-alt"></i>
+                            Your data is secure. We never share your information.
+                        </p>
+                    </form>
+                </div>
+                
+                <div class="cta-benefits">
+                    <div class="benefit">
+                        <i class="fas fa-check-circle"></i>
+                        <span>No credit card required</span>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-check-circle"></i>
+                        <span>14-day free trial</span>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Cancel anytime</span>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Full support included</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-main">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <a href="/">
+                            <div class="logo-icon">
+                                <svg width="24" height="24" viewBox="0 0 32 32">
+                                    <!-- Same as header logo -->
+                                </svg>
+                            </div>
+                            <span class="logo-text">ORSYS</span>
+                        </a>
+                    </div>
+                    <p class="footer-description">
+                        Modern receipt management for modern businesses. 
+                        Go paperless, save time, impress customers.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://twitter.com/getorsys" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com/getorsys" aria-label="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/getorsys" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://instagram.com/getorsys" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="demo.html">Interactive Demo</a></li>
+                        <li><a href="roadmap.html">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="documentation.html">Documentation</a></li>
+                        <li><a href="tutorials.html">Video Tutorials</a></li>
+                        <li><a href="webinars.html">Webinars</a></li>
+                        <li><a href="help.html">Help Center</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="press.html">Press</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">Contact</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:hello@getorsys.com">hello@getorsys.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+1234567890">+1 (234) 567-890</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Tech Street, San Francisco, CA 94107</span>
+                        </li>
+                    </ul>
+                    <div class="footer-newsletter">
+                        <p>Subscribe to our newsletter</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    <p>&copy; 2024 ORSYS. All rights reserved.</p>
+                </div>
+                <div class="footer-legal">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="cookies.html">Cookie Policy</a>
+                    <a href="security.html">Security</a>
+                    <a href="sitemap.html">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeVideoModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                        title="ORSYS Demo Video" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/forms.js"></script>
+    
+    <script>
+        // Initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            initAnimations();
+            
+            // Initialize form handling
+            initForms();
+            
+            // Initialize pricing toggle
+            initPricingToggle();
+            
+            // Initialize testimonial slider
+            initTestimonialSlider();
+            
+            // Initialize mobile menu
+            initMobileMenu();
+        });
+    </script>
+</body>
+</html>

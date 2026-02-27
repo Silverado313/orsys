@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORSYS-ARY DV Reports</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+    <!-- <link rel="stylesheet" href="/assets/css/styles.css"> -->
+    
+    <!-- Spinner Loader CSS -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #overlay {
+            background: #fff;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        #loader {
+            display: block;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #9370db;
+            animation: spin 2s linear infinite;
+        }
+        #loader:before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #ba55d3;
+            animation: spin 3s linear infinite;
+        }
+        #loader:after {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #ff00ff;
+            animation: spin 1.5s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay Spinner -->
+    <div id="overlay" style="display: none;">
+        <div id="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/dashboard/">
+                <i class="fas fa-receipt me-2"></i>ORSYS-ARY
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+            
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/receipt.html"><i class="fas fa-plus-circle me-1"></i> New Receipt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dv/"><i class="fas fa-plus-circle me-1"></i> Debit Vocucher</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/add-head-page.html"><i class="fas fa-plus-circle me-1"></i> Add Head</a>
+                    </li>                                        
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/dv/"><i class="fas fa-history me-1"></i> CPV History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/"><i class="fas fa-user me-1"></i> Admin</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <button class="nav-link" id="logout-btn"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+                    </li>                    
+                </ul>
+            </div>
+            
+        </div>
+    </nav> -->
+
+
+
+    <!-- Old Navigation -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/dashboard.html">
+                <i class="fas fa-chart-line me-2"></i>ORSYS-ARY Reports
+            </a>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-outline-light btn-sm" id="logout-btn">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav> -->
+
+    <div class="container-fluid mt-4">
+
+        <!-- <div class="UDNT">
+            <h1 class="text-center"><i class="fas fa-receipt me-2"></i>CPV History</h1>
+            <div id="DisplayUserName" class="user-display"></div>
+        </div>             -->
+
+        <!-- Filter Card -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card filter-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-filter me-2"></i>Report Filters
+                        </h5>
+                    </div>
+                    
+                    <div class="card-body">
+                        <form id="filter-form">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="dateFrom" class="form-label">Date From</label>
+                                    <input type="date" class="form-control" id="dateFrom" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="dateTo" class="form-label">Date To</label>
+                                    <input type="date" class="form-control" id="dateTo" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="statusFilter" class="form-label">Payment Status</label>
+                                    <select class="form-control" id="statusFilter">
+                                        <option value="">All Status</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Failed">Failed</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-search me-1"></i>Generate Report
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row mt-4" id="summary-section" style="display: none;">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Total CPV</h6>
+                                <h3 class="mb-0" id="total-vouchers">0</h3>
+                            </div>
+                            <i class="fas fa-receipt fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Amount</h6>
+                                <h3 class="mb-0" id="total-amount">0</h3>
+                            </div>
+                            <i class="fas fa-file-invoice fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Pending</h6>
+                                <h3 class="mb-0" id="pending-vouchers">0</h3>
+                            </div>
+                            <i class="fas fa-clock fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Completed</h6>
+                                <h3 class="mb-0" id="completed-vouchers">0</h3>
+                            </div>
+                            <i class="fas fa-check-circle fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>         
+        
+        <!-- <div class="row summary-cards" id="summary-section" style="display: none;">
+            <div class="col-md-3">
+                <div class="summary-card">
+                    <div class="summary-number" id="total-vouchers">0</div>
+                    <div class="summary-label">Total Vouchers</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card">
+                    <div class="summary-number" id="total-amount">PKR 0</div>
+                    <div class="summary-label">Total Amount</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card">
+                    <div class="summary-number" id="completed-vouchers">0</div>
+                    <div class="summary-label">Completed</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card">
+                    <div class="summary-number" id="pending-vouchers">0</div>
+                    <div class="summary-label">Pending</div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Loading Spinner (Alternative) -->
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Generating report...</p>
+        </div>
+
+        <!-- Report Table -->
+        <div class="container-fluid" id="report-section" style="display: none;">
+            <h2>Export Voucher Report</h2>
+            <!-- <div class="mb-3">
+                <button class="btn btn-success btn-sm" id="export-excel">
+                    <i class="fas fa-file-excel me-1"></i>Export to Excel
+                </button>
+                <button class="btn btn-info btn-sm" id="export-csv">
+                    <i class="fas fa-file-csv me-1"></i>Export to CSV
+                </button>
+            </div> -->
+            <div style="overflow-x:auto;">
+                <table id="report-table" class="table table-striped table-hover nowrap w-100"></table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery (must be loaded first) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- DataTables Core -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    
+    <!-- DataTables Buttons Extension -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+    
+    <!-- Firebase Configuration Loader -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <script src="/assets/js/navbar.js"></script>
+    
+    <!-- Updated Report JavaScript -->
+    <script src="/src/scripts/dv/appdvreport.js"></script>
+</body>
+<!-- Design & Developed by: Syed Aneel Raza -->
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Firestore Table Example</title>
+  <style>
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Firestore Data</h2>
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Voucher No</th>
+        <th>Head</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "DEPRECATED - use configLoader.js",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: "",
+      measurementId: ""
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadTable() {
+      const tbody = document.querySelector("#dataTable tbody");
+      tbody.innerHTML = ""; // clear table
+
+      const querySnapshot = await getDocs(collection(db, "dr.vouchers"));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        // Create row
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${doc.id}</td>
+          <td>${data.slipNo || "-"}</td>
+          <td>${data.paymentHead || "-"}</td>
+          <td>${data.cash || "-"}</td>
+          <td>${data.entryDate?.toDate().toLocaleString("en-GB") || "-"}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Load table on page load
+    loadTable();
+  </script>
+</body>
+</html>

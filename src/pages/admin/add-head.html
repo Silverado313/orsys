@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Head - ORSYS-ARY</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/navbar.css">
+    
+    <style>
+        /* body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border: none;
+        }
+        .card-header h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 2rem 1.5rem;
+            background: white;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46a3 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table thead th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem;
+        }
+        .table tbody td {
+            padding: 0.75rem 1rem;
+            vertical-align: middle;
+        }
+        .badge {
+            padding: 0.5em 0.75em;
+            font-size: 0.875em;
+            border-radius: 10px;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loading-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .spinner-border {
+            color: #667eea;
+        }
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+            border: none;
+        }
+        .navbar-brand {
+            color: white !important;
+            font-weight: 600;
+        }
+        .btn-outline-light {
+            border: 2px solid white;
+            color: white;
+            font-weight: 600;
+        }
+        .btn-outline-light:hover {
+            background: white;
+            color: #667eea;
+        } */
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="fas fa-receipt me-2"></i>ORSYS-ARY
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+            
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/receipt.html"><i class="fas fa-plus-circle me-1"></i> New Receipt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dv/"><i class="fas fa-plus-circle me-1"></i> Debit Vocucher</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/add-head-page.html"><i class="fas fa-file-text me-1"></i> Add Head</a>
+                    </li>                                        
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard"><i class="fas fa-history me-1"></i> Receipt History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/"><i class="fas fa-user me-1"></i> Admin</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <button class="nav-link" id="logout-btn"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+                    </li>                    
+                </ul>
+            </div>
+            
+        </div>
+    </nav> -->
+
+    <div class="container main-container mt-4">
+        <!-- Add Head Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-plus-circle me-2"></i>Add New Head</h3>
+            </div>
+            <div class="card-body">
+                <form id="add-head-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="headName" class="form-label">Head Name *</label>
+                            <input type="text" class="form-control" id="headName" placeholder="Enter head name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="headCode" class="form-label">Head Code</label>
+                            <input type="text" class="form-control" id="headCode" placeholder="Enter head code (optional)">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="headStatus" class="form-label">Status *</label>
+                            <select class="form-select" id="headStatus" required>
+                                <option value="">Select Status</option>
+                                <option value="active" selected>Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="headCategory" class="form-label">Category</label>
+                            <select class="form-select" id="headCategory">
+                                <option value="">Select Category</option>
+                                <option value="expense">Expense</option>
+                                <option value="income">Income</option>
+                                <option value="asset">Asset</option>
+                                <option value="liability">Liability</option>
+                                <option value="equity">Equity</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="headDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="headDescription" rows="3" placeholder="Enter head description (optional)"></textarea>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Add Head
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-refresh me-1"></i>Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Existing Heads List -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list me-2"></i>Existing Heads</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Code</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="heads-table-body">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Loading heads...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner-border mb-3" role="status"></div>
+            <p class="mb-0">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle me-2"></i>Success
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0" id="success-message">Head added successfully!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit me-2"></i>Edit Head
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-head-form">
+                        <input type="hidden" id="edit-head-id">
+                        <div class="mb-3">
+                            <label for="edit-headName" class="form-label">Head Name *</label>
+                            <input type="text" class="form-control" id="edit-headName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-headCode" class="form-label">Head Code</label>
+                            <input type="text" class="form-control" id="edit-headCode">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-headStatus" class="form-label">Status *</label>
+                                <select class="form-select" id="edit-headStatus" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit-headCategory" class="form-label">Category</label>
+                                <select class="form-select" id="edit-headCategory">
+                                    <option value="">Select Category</option>
+                                    <option value="expense">Expense</option>
+                                    <option value="income">Income</option>
+                                    <option value="asset">Asset</option>
+                                    <option value="liability">Liability</option>
+                                    <option value="equity">Equity</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-headDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="edit-headDescription" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateHead()">
+                        <i class="fas fa-save me-1"></i>Update Head
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <!-- Firebase Configuration Loader -->
+    <script src="/src/scripts/config/configLoader.js"></script>
+    
+    <!-- Input Validation -->
+    <script src="/src/scripts/config/validation.js"></script>
+
+    <!-- Universal Navbar -->
+    <script src="/assets/js/navbar.js"></script>
+
+    <!-- Main Script -->
+    <script src="/src/scripts/admin/addhead.js"></script>
+</body>
+</html>
