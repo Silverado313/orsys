@@ -1,268 +1,282 @@
-Based on my analysis of your HTML files, here's a comprehensive **README.md** file for your ORSYS-ARY system:
+# 🧾 ORSYS-ARY
+### Online Receipt & Voucher Management System
 
-```markdown
-# ORSYS-ARY - Online Receipt System
+![Version](https://img.shields.io/badge/Version-1.0-blue?style=for-the-badge)
+![Firebase](https://img.shields.io/badge/Firebase-9.23.0-orange?style=for-the-badge&logo=firebase)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.0-purple?style=for-the-badge&logo=bootstrap)
+![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)
 
-**Version:** 1.0  
-**Last Updated:** December 2024  
-**Developed by:** TechPeer (Syed Aneel Raza)  
-**Powered by:** Claude.AI
+**A comprehensive financial receipt and voucher management system built with Firebase.**
+
+[🚀 Live System](https://orsys-ary.firebaseapp.com) • [👨‍💻 Developer](https://techpeer.web.app) • [📧 Support](mailto:support@techpeer.web.app)
+
+---
+
+</div>
 
 ## 📋 Table of Contents
-- [System Overview](#system-overview)
-- [Key Features](#key-features)
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Installation & Setup](#installation--setup)
-- [User Guide](#user-guide)
-- [Security & Authentication](#security--authentication)
-- [Reporting & Analytics](#reporting--analytics)
-- [Troubleshooting](#troubleshooting)
-- [Developer Notes](#developer-notes)
 
-## 🎯 System Overview
+- [Overview](#-overview)
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [User Guide](#-user-guide)
+- [Security & Authentication](#-security--authentication)
+- [Reporting & Analytics](#-reporting--analytics)
+- [Firestore Data Models](#-firestore-data-models)
+- [Troubleshooting](#-troubleshooting)
+- [Developer Notes](#-developer-notes)
+- [Credits & License](#-credits--license)
 
-ORSYS-ARY is a comprehensive online receipt and voucher management system designed for financial operations. The system provides:
+---
 
-- **Cash Receipt Vouchers (CRV)**: For recording incoming payments
-- **Cash Payment Vouchers (CPV/DV)**: For recording outgoing payments
-- **Real-time Analytics**: Executive dashboard with financial insights
-- **Receipt Verification**: Public verification of receipt authenticity
-- **Multi-user Access**: Role-based access control
-- **Export & Sharing**: Multiple export formats (PDF, Image, Excel)
+## 🎯 Overview
 
-## ✨ Key Features
+**ORSYS-ARY** is a robust online receipt and voucher management system designed for streamlined financial operations. It enables organizations to digitally manage, track, and verify cash receipts and payment vouchers in real time.
 
-### 1. **Dual Voucher System**
-   - **CRV** (Cash Receipt Voucher): Records money received
-   - **CPV/DV** (Cash Payment Voucher/Debit Voucher): Records money paid out
+| Feature | Description |
+|--------|-------------|
+| 🧾 **CRV** | Cash Receipt Voucher — records incoming payments |
+| 💸 **CPV/DV** | Cash Payment / Debit Voucher — records outgoing payments |
+| 📊 **Analytics** | Executive dashboard with real-time financial insights |
+| 🔍 **Verification** | Public receipt verification via slip number |
+| 👥 **Multi-user** | Role-based access with email authorization |
+| 📤 **Export** | PDF, Image, and Excel export options |
 
-### 2. **Smart Analytics Dashboard**
-   - Real-time KPI monitoring
-   - Interactive charts (Chart.js)
-   - Trend analysis (7/30/90/365 days)
-   - Department-wise spending analysis
+---
 
-### 3. **Advanced Reporting**
-   - DataTables with export functionality
-   - Filterable reports by date range and status
-   - Excel, PDF, and print exports
-   - Top performers ranking
+## ✨ Features
 
-### 4. **Security Features**
-   - Firebase Authentication
-   - Email-based user access control
-   - Receipt verification via slip number
-   - QR code integration for receipts
+### 🧾 Dual Voucher System
+- **CRV** — Create and manage cash receipt vouchers with full denomination tracking
+- **CPV/DV** — Create debit/payment vouchers linked to admin-configured payment heads
 
-### 5. **Mobile Responsive**
-   - Bootstrap 5 responsive design
-   - PWA (Progressive Web App) ready
-   - Mobile-friendly interfaces
+### 📊 Smart Analytics Dashboard
+- Real-time KPI monitoring cards
+- Interactive charts powered by Chart.js
+- Trend analysis over 7 / 30 / 90 / 365 days
+- Department-wise and head-wise spending breakdowns
+
+### 📁 Advanced Reporting
+- DataTables with server-side filtering
+- Date range and status-based filters
+- Excel, PDF, and print exports
+- Top performers / point person rankings
+
+### 🔒 Security
+- Firebase Authentication (Email/Password)
+- Pre-authorized email whitelist
+- Receipt verification via unique slip numbers
+- QR code integration on printed receipts
+
+### 📱 Mobile Responsive
+- Bootstrap 5 responsive layout
+- PWA (Progressive Web App) ready
+- Mobile-friendly interfaces across all pages
+
+---
 
 ## 🛠 Technology Stack
 
 ### Frontend
-- **HTML5** with semantic markup
-- **CSS3** with Bootstrap 5.3.0
-- **JavaScript** (ES6+)
-- **Chart.js 4.4.0** for data visualization
-- **DataTables 1.13.7** for table management
-- **Font Awesome 6.4.0** for icons
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| HTML5 / CSS3 | — | Structure & Styling |
+| Bootstrap | 5.3.0 | Responsive UI Framework |
+| JavaScript | ES6+ | Application Logic |
+| Chart.js | 4.4.0 | Data Visualization |
+| DataTables | 1.13.7 | Table Management |
+| Font Awesome | 6.4.0 | Icons |
+| jQuery | 3.7.1 | DataTables Dependency |
 
-### Backend & Database
-- **Firebase 9.22.0/9.23.0** (Firestore, Authentication)
-- **Firebase Hosting** for deployment
+### Backend & Services
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| Firebase Firestore | 9.22–9.23 | Database |
+| Firebase Auth | 9.22–9.23 | Authentication |
+| Firebase Hosting | — | Deployment |
 
-### Third-party Libraries
-- **jQuery 3.7.1** (for DataTables)
-- **html2canvas** for image generation
-- **jsPDF** for PDF generation
-- **QRCode.js** for QR generation
-- **html2pdf.js** for client-side PDFs
+### Utilities
+| Library | Purpose |
+|--------|---------|
+| html2canvas | Screenshot / Image export |
+| jsPDF / html2pdf.js | PDF generation |
+| QRCode.js | QR code on receipts |
+| JSZip + pdfmake | Excel/PDF DataTable exports |
+
+---
 
 ## 📁 Project Structure
 
 ```
 orsys-ary/
 │
-├── src/
-│   ├── pages/
-│   │   ├── vouchers/          # Cash Receipt Voucher pages
-│   │   │   ├── receipt.html   # Create new CRV
-│   │   │   ├── verify.html    # Verify receipt
-│   │   │   └── print.html     # Share/print receipt
-│   │   │
-│   │   ├── dv/                # Debit Voucher pages
-│   │   │   ├── index.html     # Create new CPV
-│   │   │   └── print.html     # Share/print DV
-│   │   │
-│   │   ├── admin/             # Admin pages
-│   │   │   └── add-head.html  # Add payment heads
-│   │   │
-│   │   └── dashboard/         # Dashboard pages
-│   │       ├── index.html     # Main CRV dashboard
-│   │       ├── dv.html        # DV dashboard
-│   │       └── analytics.html # Analytics dashboard
+├── 📂 public/                        # Firebase Hosting root
+│   ├── index.html                    # Login page
+│   ├── dashboard.html                # Main dashboard
 │   │
-│   ├── scripts/
-│   │   ├── config/
-│   │   │   └── firebaseConfig.js
+│   ├── 📂 src/
+│   │   ├── 📂 pages/
+│   │   │   ├── 📂 vouchers/          # Cash Receipt Voucher pages
+│   │   │   │   ├── receipt.html      # Create new CRV
+│   │   │   │   ├── verify.html       # Verify receipt
+│   │   │   │   └── print.html        # Share/print receipt
+│   │   │   │
+│   │   │   ├── 📂 dv/                # Debit Voucher pages
+│   │   │   │   ├── index.html        # Create new CPV
+│   │   │   │   └── print.html        # Share/print DV
+│   │   │   │
+│   │   │   ├── 📂 admin/             # Admin pages
+│   │   │   │   └── add-head.html     # Manage payment heads
+│   │   │   │
+│   │   │   └── 📂 dashboard/         # Dashboard pages
+│   │   │       ├── index.html        # CRV dashboard
+│   │   │       ├── dv.html           # DV dashboard
+│   │   │       └── analytics.html    # Analytics dashboard
 │   │   │
-│   │   ├── dashboard/         # Dashboard scripts
-│   │   ├── dv/                # DV scripts
-│   │   ├── vouchers/          # Voucher scripts
-│   │   └── admin/             # Admin scripts
+│   │   ├── 📂 scripts/
+│   │   │   ├── 📂 config/
+│   │   │   │   └── firebaseConfig.js
+│   │   │   ├── 📂 dashboard/
+│   │   │   ├── 📂 dv/
+│   │   │   ├── 📂 vouchers/
+│   │   │   └── 📂 admin/
+│   │   │
+│   │   └── 📂 styles/
+│   │       ├── voucher.css
+│   │       └── crv.css
 │   │
-│   └── styles/                # Custom CSS
-│       ├── voucher.css
-│       ├── crv.css
-│       └── ...
+│   ├── 📂 assets/
+│   │   ├── 📂 css/
+│   │   │   ├── styles.css
+│   │   │   └── navbar.css
+│   │   └── 📂 js/
+│   │       ├── navbar.js
+│   │       └── sign-in.js
+│   │
+│   └── 📂 favicon_io/                # Favicon assets
 │
-├── assets/
-│   ├── css/
-│   │   ├── styles.css
-│   │   ├── navbar.css
-│   │   └── ...
-│   │
-│   └── js/
-│       ├── navbar.js
-│       ├── sign-in.js
-│       └── ...
-│
-├── favicon_io/                # Favicon files
-├── index.html                 # Login page
-└── dashboard.html             # Main dashboard
+├── firebase.json
+└── .firebaserc
 ```
+
+---
 
 ## 🚀 Installation & Setup
 
 ### Prerequisites
-1. Firebase account with Firestore and Authentication enabled
-2. Modern web browser (Chrome 80+, Firefox 75+, Safari 13+)
-3. Basic knowledge of Firebase configuration
+- Node.js & Firebase CLI installed
+- Firebase project with **Firestore** and **Authentication** enabled
+- Modern browser (Chrome 80+, Firefox 75+, Safari 13+)
 
-### Setup Steps
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Silverado313/orsys.git
+cd orsys
+```
 
-1. **Clone/Download the project**
-   ```bash
-   git clone [repository-url]
-   cd orsys-ary
-   ```
+### 2. Install Firebase CLI
+```bash
+npm install -g firebase-tools
+firebase login
+```
 
-2. **Configure Firebase**
-   - Create a new Firebase project at [firebase.google.com](https://firebase.google.com)
-   - Enable Authentication (Email/Password)
-   - Enable Firestore Database
-   - Get your Firebase configuration
+### 3. Configure Firebase
+Edit `/src/scripts/config/firebaseConfig.js`:
+```javascript
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID"
+};
+```
 
-3. **Update Firebase Configuration**
-   Edit `/src/scripts/config/firebaseConfig.js`:
-   ```javascript
-   const firebaseConfig = {
-     apiKey: "YOUR_API_KEY",
-     authDomain: "YOUR_PROJECT.firebaseapp.com",
-     projectId: "YOUR_PROJECT_ID",
-     storageBucket: "YOUR_PROJECT.appspot.com",
-     messagingSenderId: "YOUR_SENDER_ID",
-     appId: "YOUR_APP_ID",
-     measurementId: "YOUR_MEASUREMENT_ID"
-   };
-   ```
+### 4. Initialize Firestore Collections
+Create the following collections in your Firebase console:
 
-4. **Initialize Firestore Collections**
-   Create the following collections:
-   - `receipts` - for CRV records
-   - `dr.vouchers` - for DV records  
-   - `head` - for payment heads
-   - `users` - for user management (optional)
+| Collection | Purpose |
+|-----------|---------|
+| `receipts` | CRV records |
+| `dr.vouchers` | DV/CPV records |
+| `head` | Payment heads |
+| `users` | User management (optional) |
 
-5. **Set up Allowed Users**
-   Add authorized emails in `/assets/js/sign-in.js`:
-   ```javascript
-   const allowedEmails = [
-     'user1@example.com',
-     'user2@example.com'
-   ];
-   ```
+### 5. Configure Allowed Users
+Edit `/assets/js/sign-in.js`:
+```javascript
+const allowedEmails = [
+  'user1@example.com',
+  'user2@example.com'
+];
+```
 
-6. **Deploy to Firebase Hosting**
-   ```bash
-   firebase init
-   firebase deploy
-   ```
+### 6. Run Locally
+```bash
+firebase serve --host 192.168.99.129 --port 5000
+```
+
+### 7. Deploy to Firebase Hosting
+```bash
+firebase deploy
+```
+
+---
 
 ## 📖 User Guide
 
-### Login Process
-1. Navigate to the login page
-2. Enter authorized email and password
-3. System validates against allowed email list
-4. Redirect to main dashboard
+### 🔑 Login
+1. Open the system URL
+2. Enter your authorized email and password
+3. System validates against the allowed email list
+4. Redirected to the main dashboard upon success
 
-### Creating a Voucher
-
-#### Cash Receipt Voucher (CRV)
-1. Navigate to: `/receipt.html`
+### 🧾 Creating a Cash Receipt Voucher (CRV)
+1. Navigate to `/receipt.html`
 2. Fill in required fields:
    - Cell No (12 digits)
-   - Point Person (cash received from)
-   - Payment Mode (Cash/Bank)
-   - Payment From (store/location)
+   - Point Person
+   - Payment Mode (Cash / Bank)
+   - Payment From
    - Payment Status
    - Denomination breakdown
-3. Submit to generate slip number
+3. Submit → slip number auto-generated
 
-#### Cash Payment Voucher (CPV/DV)
-1. Navigate to: `/dv/index.html`
-2. Additional field: **Payment Head** (from admin-configured heads)
-3. Fill remaining fields similar to CRV
-4. Submit to generate voucher
+### 💸 Creating a Debit Voucher (CPV/DV)
+1. Navigate to `/dv/index.html`
+2. Select **Payment Head** (configured by admin)
+3. Fill remaining fields (same as CRV)
+4. Submit → voucher number auto-generated
 
-### Dashboard Features
+### 📊 Dashboard & Analytics
+- **Main Dashboard** — View all vouchers, filter, export, view details
+- **Analytics Dashboard** — KPI cards, trend charts, department breakdowns
 
-#### Main Dashboard (`dashboard.html`)
-- View all vouchers in DataTable
-- Filter by date, status, payment mode
-- View details in modal
-- Export to Excel/PDF
-
-#### Analytics Dashboard
-- Real-time KPI cards
-- Interactive charts:
-  - Payment trend analysis
-  - Status distribution
-  - Department-wise spending
-  - Top point persons
-- Date range filtering (7/30/90/365 days)
-
-### Receipt Verification
-1. Navigate to: `/verify.html`
-2. Enter slip number
+### 🔍 Receipt Verification
+1. Navigate to `/verify.html`
+2. Enter the slip number
 3. View verified receipt details
-4. Print or share receipt
+4. Print or share the receipt
 
-### Admin Functions
+### ⚙️ Admin — Payment Heads
+1. Navigate to `/admin/add-head.html`
+2. Add new heads (Expense / Income / Asset)
+3. Edit or delete existing heads
 
-#### Adding Payment Heads
-1. Navigate to: `/admin/add-head.html`
-2. Add new payment heads (Expense, Income, Asset categories)
-3. Manage existing heads (Edit/Delete)
+---
 
 ## 🔒 Security & Authentication
 
 ### Access Control
-- Email-based authentication
-- Pre-defined allowed email list
-- Firebase Authentication integration
-- Session management
+- Email/password authentication via Firebase Auth
+- Pre-defined allowed email whitelist
+- Session managed by Firebase SDK
 
-### Data Security
-- Firestore security rules recommended
-- Server-side validation through Firestore rules
-- Client-side input validation
-
-### Recommended Firestore Rules
+### Recommended Firestore Security Rules
 ```javascript
 rules_version = '2';
 service cloud.firestore {
@@ -273,153 +287,126 @@ service cloud.firestore {
     match /dr.vouchers/{document} {
       allow read, write: if request.auth != null;
     }
+    match /head/{document} {
+      allow read, write: if request.auth != null;
+    }
   }
 }
 ```
 
+---
+
 ## 📊 Reporting & Analytics
 
-### Available Reports
-1. **Voucher Report** - Filter by date range and status
-2. **Analytics Dashboard** - Executive insights
-3. **Top Performers** - Point person rankings
-4. **Department Analysis** - Spending by department
+| Report | Description |
+|--------|-------------|
+| Voucher Report | Filter by date range and status |
+| Analytics Dashboard | Executive-level insights |
+| Top Performers | Point person rankings |
+| Department Analysis | Spending by head/department |
 
 ### Export Options
-- **Excel** (.xlsx) via DataTables Buttons
-- **PDF** via jsPDF/html2pdf
-- **Image** via html2canvas
-- **Print** directly from browser
+| Format | Method |
+|--------|--------|
+| `.xlsx` Excel | DataTables Buttons + JSZip |
+| `.pdf` PDF | jsPDF / html2pdf.js |
+| `.png` Image | html2canvas |
+| Print | Browser native print |
 
-## 🐛 Troubleshooting
+---
 
-### Common Issues
+## 🗃 Firestore Data Models
 
-1. **Login Failed**
-   - Check if email is in allowed list
-   - Verify Firebase Authentication is enabled
-   - Check browser console for errors
-
-2. **Firestore Permission Denied**
-   - Configure Firestore security rules
-   - Check collection names match code
-   - Verify user is authenticated
-
-3. **Charts Not Loading**
-   - Check Chart.js CDN connection
-   - Verify data format in Firestore
-   - Check browser console for errors
-
-4. **Export Not Working**
-   - Ensure all DataTables libraries are loaded
-   - Check JSZip and pdfmake CDNs
-   - Verify file permissions
-
-### Debug Mode
-Enable console logging in scripts:
-```javascript
-// Add to any script file
-console.log('Module loaded:', moduleName);
-console.log('Data:', data);
-```
-
-## 👨‍💻 Developer Notes
-
-### Code Standards
-- Use consistent Firebase version (9.22.0/9.23.0)
-- Maintain library version consistency
-- Follow Bootstrap 5 markup structure
-- Use Font Awesome for icons
-
-### File Naming Convention
-- HTML files: `kebab-case.html`
-- JS files: `camelCase.js`
-- CSS files: `kebab-case.css`
-
-### Firebase Collections Structure
-
-#### Receipts Collection
+### `receipts` Collection
 ```javascript
 {
-  slipNo: number,           // Auto-generated timestamp
+  slipNo: number,               // Auto-generated timestamp
   paymentFrom: string,
   pointPerson: string,
-  paymentMode: string,      // Cash, HBL, MEZAN, etc.
-  paymentStatus: string,    // Pending, Completed, Failed
+  paymentMode: string,          // Cash, HBL, MEZAN, etc.
+  paymentStatus: string,        // Pending, Completed, Failed
   totalAmount: number,
   cellNo: string,
-  user: string,            // Logged in user
+  user: string,
   email: string,
   remarks: string,
   denominations: {
     deno5000: number,
     deno1000: number,
-    // ... other denominations
+    deno500: number,
+    deno100: number,
+    deno50: number,
+    deno20: number,
+    deno10: number
   },
-  timestamp: firebase.firestore.Timestamp
+  timestamp: Timestamp
 }
 ```
 
-#### Head Collection (for CPV)
+### `head` Collection
 ```javascript
 {
-  name: string,           // Head name
-  code: string,          // Optional code
-  status: string,        // active/inactive
-  category: string,      // expense/income/asset
+  name: string,
+  code: string,
+  status: string,               // active / inactive
+  category: string,             // expense / income / asset
   description: string,
-  createdDate: firebase.firestore.Timestamp
+  createdDate: Timestamp
 }
 ```
-
-### Browser Compatibility
-- Chrome 80+ (Recommended)
-- Firefox 75+
-- Safari 13+
-- Edge 80+
-
-## 📞 Support & Contact
-
-**Technical Support:**  
-- Developer: Syed Aneel Raza  
-- Email: [Contact via TechPeer](https://techpeer.web.app)  
-- Project URL: [Live System](https://orsys-ary.firebaseapp.com)
-
-**Documentation:**  
-- This README file
-- In-code comments
-- Firebase documentation
-
-## 📝 License & Credits
-
-**Copyright © 2024 ORSYS-ARY**  
-All rights reserved.
-
-**Credits:**
-- Frontend Framework: Bootstrap 5
-- Charts: Chart.js
-- Tables: DataTables
-- Backend: Firebase
-- Icons: Font Awesome
-- QR Generation: QRCode.js
-
-**Disclaimer:**  
-This system is for internal use. Ensure compliance with your organization's data policies and regulations.
 
 ---
 
-*Last Updated: December 2024*  
-*System Version: 1.0*  
-*Documentation Version: 1.0*
+## 🐛 Troubleshooting
+
+| Issue | Possible Cause | Solution |
+|-------|---------------|----------|
+| Login Failed | Email not in allowed list | Add email to `allowedEmails` array |
+| Permission Denied | Firestore rules blocking | Update security rules |
+| Charts Not Loading | CDN issue | Check internet / console errors |
+| Export Not Working | Missing JSZip/pdfmake | Verify CDN links are loading |
+| Blank Dashboard | Auth not initialized | Check `firebaseConfig.js` values |
+
+### Enable Debug Logging
+```javascript
+// Add to any script for debugging
+console.log('Module loaded:', moduleName);
+console.log('Firestore data:', data);
 ```
 
-This README.md provides:
+---
 
-1. **Complete system documentation** - Covers all aspects of the ORSYS-ARY system
-2. **Setup instructions** - Step-by-step Firebase configuration
-3. **User guide** - How to use each feature
-4. **Technical details** - Code structure and data models
-5. **Troubleshooting** - Common issues and solutions
-6. **Developer notes** - Coding standards and best practices
+## 👨‍💻 Developer Notes
 
-The documentation is comprehensive enough for both end-users and developers who need to maintain or extend the system.
+### Code Standards
+- Use Firebase SDK version `9.22.0` or `9.23.0` consistently
+- Follow Bootstrap 5 markup conventions
+- Use Font Awesome 6 for all icons
+- File naming: HTML → `kebab-case`, JS → `camelCase`, CSS → `kebab-case`
+
+### Browser Support
+| Browser | Minimum Version |
+|---------|----------------|
+| Chrome | 80+ ✅ |
+| Firefox | 75+ ✅ |
+| Safari | 13+ ✅ |
+| Edge | 80+ ✅ |
+
+---
+
+## 📞 Credits & License
+
+**Developed by:** Syed Aneel Raza — [TechPeer](https://techpeer.web.app)  
+**Powered by:** [Claude.AI](https://claude.ai)  
+**Last Updated:** December 2024 | **Version:** 1.0
+
+### Libraries & Frameworks
+Bootstrap 5 • Firebase • Chart.js • DataTables • Font Awesome • QRCode.js • jsPDF • html2canvas
+
+---
+
+
+
+**© 2024 ORSYS-ARY — All Rights Reserved**  
+*For internal use only. Ensure compliance with your organization's data policies.*
+
